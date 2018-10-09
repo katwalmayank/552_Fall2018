@@ -21,26 +21,24 @@ WriteDecoder_4_16 writeReg(.RegId(DstReg), .WriteReg(WriteReg), .Wordline(dest_o
 
 
 //16 REGISTERS 
-Register Reg1(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[0]),.Readenable2(regout2[0]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg2(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[1]),.Readenable2(regout2[1]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg3(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[2]),.Readenable2(regout2[2]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg4(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[3]),.Readenable2(regout2[3]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg5(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[4]),.Readenable2(regout2[4]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg6(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[5]),.Readenable2(regout2[5]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg7(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[6]),.Readenable2(regout2[6]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg8(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[7]),.Readenable2(regout2[7]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg9(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[8]),.Readenable2(regout2[8]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg10(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[9]),.Readenable2(regout2[9]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg11(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[10]),.Readenable2(regout2[10]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg12(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[11]),.Readenable2(regout2[11]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg13(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[12]),.Readenable2(regout2[12]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg14(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[13]),.Readenable2(regout2[13]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg15(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[14]),.Readenable2(regout2[14]),.Bitline1(bitline1),.Bitline2(bitline2);
-Register Reg16(.clk(clk),.rst(rst),.D(DstData),.WriteReg(WriteReg),.ReadEnable1(regout1[15]),.Readenable2(regout2[15]),.Bitline1(bitline1),.Bitline2(bitline2);
+Register Reg1(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[0]),.ReadEnable1(regout1[0]),.Readenable2(regout2[0]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg2(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[1]),.ReadEnable1(regout1[1]),.Readenable2(regout2[1]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg3(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[2]),.ReadEnable1(regout1[2]),.Readenable2(regout2[2]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg4(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[3]),.ReadEnable1(regout1[3]),.Readenable2(regout2[3]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg5(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[4]),.ReadEnable1(regout1[4]),.Readenable2(regout2[4]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg6(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[5]),.ReadEnable1(regout1[5]),.Readenable2(regout2[5]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg7(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[6]),.ReadEnable1(regout1[6]),.Readenable2(regout2[6]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg8(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[7]),.ReadEnable1(regout1[7]),.Readenable2(regout2[7]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg9(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[8]),.ReadEnable1(regout1[8]),.Readenable2(regout2[8]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg10(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[9]),.ReadEnable1(regout1[9]),.Readenable2(regout2[9]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg11(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[10]),.ReadEnable1(regout1[10]),.Readenable2(regout2[10]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg12(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[11]),.ReadEnable1(regout1[11]),.Readenable2(regout2[11]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg13(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[12]),.ReadEnable1(regout1[12]),.Readenable2(regout2[12]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg14(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[13]),.ReadEnable1(regout1[13]),.Readenable2(regout2[13]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg15(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[14]),.ReadEnable1(regout1[14]),.Readenable2(regout2[14]),.Bitline1(SrcData1),.Bitline2(SrcData2));
+Register Reg16(.clk(clk),.rst(rst),.D(DstData),.WriteReg(dest_out[15]),.ReadEnable1(regout1[15]),.Readenable2(regout2[15]),.Bitline1(SrcData1),.Bitline2(SrcData2));
 
-//Need to set Src Data 
-assign SrcData1 = 
-assign SrcData2 = 
+
 
 	
 endmodule

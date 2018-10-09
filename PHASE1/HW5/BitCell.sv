@@ -12,10 +12,13 @@ inout Bitline2;
 
 wire Q_dff; 
 
+//iii.Each bit cell (as show above) consists of a D-Flip Flop and tri-state buffers.
+
 dff Dff(.q(Q_dff), .d(D), .wen(WriteEnable), .clk(clk), .rst(rst));
 
-assign Bitline1 = (ReadEnable1) ? Q_dff: 1'bx;
-assign Bitline2 = (ReadEnable2) ? Q_dff: 1'bx;
+//tri-state: high z if ~ReadEnable 
+assign Bitline1 = (ReadEnable1) ? Q_dff: 1'bz;
+assign Bitline2 = (ReadEnable2) ? Q_dff: 1'bz;
 
-
+	
 endmodule
