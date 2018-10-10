@@ -1,0 +1,14 @@
+# Add any compiled or simulation files here
+work/
+**.bak
+**.mti
+**.mpf
+**transcript
+**.wlf
+**db/
+**incremental_db/
+**output_files/
+**.qsys_edit/
+**.jic
+**.map
+**.vstf
