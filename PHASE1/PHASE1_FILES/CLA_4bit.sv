@@ -12,9 +12,6 @@ assign Generate = A & B;
 assign Propagate = A ^ B; 
 	
 
-//TODO: THIS NEEDS TO CHANGE!  There shouldn't be a carry out.  Carry logic below needs to change
-
-
 
 //CarryWire
 assign Carry[0] = Cin;
@@ -22,7 +19,7 @@ assign Carry[1] = Generate[0] | (Propagate[0] & Carry[0]);
 assign Carry[2] = Generate[1] | (Propagate[1] & Generate[0]) | (Propagate[1] & Propagate[0] & Carry[0]);
 assign Carry[3] = Generate[2] | (Propagate[2] & Generate[1]) | (Propagate[2] & Propagate[1] & Generate[0]) | (Propagate[2] & Propagate[1] & Propagate[0] & Carry[0]);
     
-//CarryOut
+//CarryOut (MIGHT NOT NEED) 
 assign Cout = Generate[3] | (Propagate[3] & Generate[2]) | (Propagate[3] & Propagate[2] & Generate[1]) | (Propagate[3] & Propagate[2] & Propagate[1] & Generate[0]) |(Propagate[3] & Propagate[2] & Propagate[1] & Propagate[0] & Carry[0]);
     
 //SumValue  
