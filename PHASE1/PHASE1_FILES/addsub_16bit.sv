@@ -29,8 +29,8 @@ full_adder_1bit FA15(.c_out(w15), .sum(temp[15]), .a(A[15]), .b(B[15] ^ Sub), .c
 assign both_pos = ~A[15] & ~B[15];
 assign both_neg = A[15] & B[15];
 assign overflow = w14 ^ w15;
-assign Sum = (overflow & both_pos & ~Sub) ? 16'h8000 :
-	     (overflow & both_neg & ~Sub) ? 16'h7FFF :
+assign Sum = (overflow & both_pos & ~Sub) ? 16'h7FFF :
+	     (overflow & both_neg & ~Sub) ? 16'h8000 :
              (overflow & A[15] & ~B[15] & Sub) ? 16'h8000 :
 	     (overflow & ~A[15] & B[15] & Sub) ? 16'h7FFF :	
 	      temp;
