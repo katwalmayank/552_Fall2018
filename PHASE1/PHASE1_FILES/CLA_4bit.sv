@@ -19,8 +19,8 @@ assign Carry[1] = Generate[0] | (Propagate[0] & Carry[0]);
 assign Carry[2] = Generate[1] | (Propagate[1] & Generate[0]) | (Propagate[1] & Propagate[0] & Carry[0]);
 assign Carry[3] = Generate[2] | (Propagate[2] & Generate[1]) | (Propagate[2] & Propagate[1] & Generate[0]) | (Propagate[2] & Propagate[1] & Propagate[0] & Carry[0]);
     
-//CarryOut (MIGHT NOT NEED) 
-//assign Cout = Generate[3] | (Propagate[3] & Generate[2]) | (Propagate[3] & Propagate[2] & Generate[1]) | (Propagate[3] & Propagate[2] & Propagate[1] & Generate[0]) |(Propagate[3] & Propagate[2] & Propagate[1] & Propagate[0] & Carry[0]);
+//CarryOut
+assign Cout = Generate[3] | (Propagate[3] & Generate[2]) | (Propagate[3] & Propagate[2] & Generate[1]) | (Propagate[3] & Propagate[2] & Propagate[1] & Generate[0]) |(Propagate[3] & Propagate[2] & Propagate[1] & Propagate[0] & Carry[0]);
     
 //SumValue  
 assign Sum = Propagate ^ Carry;
