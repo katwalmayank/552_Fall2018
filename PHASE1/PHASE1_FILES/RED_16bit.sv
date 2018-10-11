@@ -4,28 +4,32 @@ input [15:0] A, B;
 output [15:0] Sum;
 
 wire [8:0] top_half, bottom_half;
-wire [3:0] sum_ab1, sum_ab2, sum_cd1, sum_cd2, sum_bottom, sum_top, sum_carry;
-wire ab1_c, ab2_c, cd1_c, cd2_c, carry_bottom, carry_top, final_carry;
+wire [3:0] BD_Bottom, BD_Top, AC_Bottom, AC_Top, sum_bottom, sum_top, sum_carry;
+wire bd1_c, bd2_c, ac1_c, ac2_c, carry_bottom, carry_top, final_carry;
 
-//AAAAAAAA_BBBBBBBB + CCCCCCCC_DDDDDDDD
+//INPUT: AAAAAAAA_BBBBBBBB + CCCCCCCC_DDDDDDDD
 
 // BBBB + DDDD - bottom
-CLA_4bit CLA1(.Sum(sum_ab1), .Cout(ab1_c), .A(A[3:0]), .B(B[3:0]), .Cin(1'b0));
+CLA_4bit CLA1(.Sum(BD_Bottom), .Cout(bd1_c), .A(A[3:0]), .B(B[3:0]), .Cin(1'b0));
+
 // BBBB + DDDD - top
-CLA_4bit CLA2(.Sum(sum_ab2), .Cout(ab2_c), .A(A[7:4]), .B(B[7:4]), .Cin(ab1_c));
+CLA_4bit CLA2(.Sum(BD_Top), .Cout(bd2_c), .A(A[7:4]), .B(B[7:4]), .Cin(bd1_c));
 
 // AAAA + CCCC - bottom
-CLA_4bit CLA3(.Sum(sum_cd1), .Cout(cd1_c), .A(A[11:8]), .B(B[11:8]), .Cin(1'b0));
+CLA_4bit CLA3(.Sum(AC_Bottom), .Cout(ac1_c), .A(A[11:8]), .B(B[11:8]), .Cin(1'b0));
+
 // AAAA + CCCC - top
-CLA_4bit CLA4(.Sum(sum_cd2), .Cout(cd2_c), .A(A[11:8]), .B(B[11:8]), .Cin(cd1_c));
+CLA_4bit CLA4(.Sum(AC_Top), .Cout(ac2_c), .A(A[11:8]), .B(B[11:8]), .Cin(ac1_c));
 
 // Concat (BBBBBBBB + DDDDDDDD)
-assign bottom_half = {ab2_c, sum_ab2, sum_ab1};
+assign bottom_half = {bd2_c, BD_Top, BD_Bottom};
+
 // Concat (AAAAAAAA + CCCCCCCC)
-assign top_half = {cd2_c, sum_cd2, sum_cd1};
+assign top_half = {ac2_c, AC_Top, AC_Bottom};
 
 // Add low bits of concat
 CLA_4bit CLA5(.Sum(sum_bottom), .Cout(carry_bottom), .A(bottom_half[3:0]), .B(top_half[3:0]), .Cin(1'b0));
+
 // Add top bits of concat
 CLA_4bit CLA6(.Sum(sum_top), .Cout(carry_top), .A(bottom_half[7:4]), .B(top_half[7:4]), .Cin(carry_bottom));
 
