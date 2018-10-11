@@ -1,9 +1,9 @@
-module CLA_4bit(Sum, Cout, Prop_Val, Gen_Val, A, B, Cin); 
+module CLA_4bit(Sum, Prop_Val, Gen_Val, A, B, Cin); 
     
 input [3:0] A, B;
 input Cin;
 output [3:0] Sum;
-output Cout, Prop_Val, Gen_Val;
+output Prop_Val, Gen_Val;
     
 wire [3:0] Generate, Propagate, Carry;
  
@@ -20,7 +20,7 @@ assign Carry[2] = Generate[1] | (Propagate[1] & Generate[0]) | (Propagate[1] & P
 assign Carry[3] = Generate[2] | (Propagate[2] & Generate[1]) | (Propagate[2] & Propagate[1] & Generate[0]) | (Propagate[2] & Propagate[1] & Propagate[0] & Carry[0]);
     
 //CarryOut (MIGHT NOT NEED) 
-assign Cout = Generate[3] | (Propagate[3] & Generate[2]) | (Propagate[3] & Propagate[2] & Generate[1]) | (Propagate[3] & Propagate[2] & Propagate[1] & Generate[0]) |(Propagate[3] & Propagate[2] & Propagate[1] & Propagate[0] & Carry[0]);
+//assign Cout = Generate[3] | (Propagate[3] & Generate[2]) | (Propagate[3] & Propagate[2] & Generate[1]) | (Propagate[3] & Propagate[2] & Propagate[1] & Generate[0]) |(Propagate[3] & Propagate[2] & Propagate[1] & Propagate[0] & Carry[0]);
     
 //SumValue  
 assign Sum = Propagate ^ Carry;
