@@ -11,10 +11,16 @@ addsub_4bit ADD2(.Sum(temp2), .Ovfl(check2), .A(A[7:4]), .B(B[7:4]), .sub(1'b0))
 addsub_4bit ADD3(.Sum(temp3), .Ovfl(check3), .A(A[11:8]), .B(B[11:8]), .sub(1'b0));
 addsub_4bit ADD4(.Sum(temp4), .Ovfl(check4), .A(A[15:12]), .B(B[15:12]), .sub(1'b0));
 
-// If there is overflow, saturate the result  TODO: CHECK IF THEY ARE BOTH NEGATIVE!!
-assign Sum[3:0] = (check1) ? 4'h7 : temp1;
-assign Sum[7:4] = (check2) ? 4'h7 : temp2;
-assign Sum[11:8] = (check3) ? 4'h7 : temp3;
-assign Sum[15:12] = (check4) ? 4'h7 : temp4;
+// If there is overflow, saturate the result
+assign Sum[3:0] = (~check1) ? temp1 :
+		  (A[3] & B[3]) ? 4'h8 : 4'h7;
 
+assign Sum[7:4] = (~check2) ? temp2 :
+		  (A[7] & B[7]) ? 4'h8 : 4'h7;
+
+assign Sum[11:8] = (~check3) ? temp3 :
+		  (A[11] & B[11]) ? 4'h8 : 4'h7;
+
+assign Sum[15:12] = (~check4) ? temp4 :
+		  (A[15] & B[15]) ? 4'h8 : 4'h7;
 endmodule
