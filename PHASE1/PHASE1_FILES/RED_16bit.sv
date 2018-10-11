@@ -7,20 +7,21 @@ wire [8:0] top_half, bottom_half;
 wire [3:0] sum_ab1, sum_ab2, sum_cd1, sum_cd2, sum_bottom, sum_top, sum_carry;
 wire ab1_c, ab2_c, cd1_c, cd2_c, carry_bottom, carry_top, final_carry;
 
+//AAAAAAAA_BBBBBBBB + CCCCCCCC_DDDDDDDD
 
-// Add A and B [3:0]
+// BBBB + DDDD - bottom
 CLA_4bit CLA1(.Sum(sum_ab1), .Cout(ab1_c), .A(A[3:0]), .B(B[3:0]), .Cin(1'b0));
-// Add A and B [7:4] 
+// BBBB + DDDD - top
 CLA_4bit CLA2(.Sum(sum_ab2), .Cout(ab2_c), .A(A[7:4]), .B(B[7:4]), .Cin(ab1_c));
 
-// Add C and D [11:8]
+// AAAA + CCCC - bottom
 CLA_4bit CLA3(.Sum(sum_cd1), .Cout(cd1_c), .A(A[11:8]), .B(B[11:8]), .Cin(1'b0));
-// Add C and D [15:12]
+// AAAA + CCCC - top
 CLA_4bit CLA4(.Sum(sum_cd2), .Cout(cd2_c), .A(A[11:8]), .B(B[11:8]), .Cin(cd1_c));
 
-// Concat bottom half
+// Concat (BBBBBBBB + DDDDDDDD)
 assign bottom_half = {ab2_c, sum_ab2, sum_ab1};
-// Concat top half
+// Concat (AAAAAAAA + CCCCCCCC)
 assign top_half = {cd2_c, sum_cd2, sum_cd1};
 
 // Add low bits of concat
