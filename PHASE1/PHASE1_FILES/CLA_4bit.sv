@@ -1,9 +1,9 @@
-module CLA_4bit(Sum, Prop_Val, Gen_Val, A, B, Cin); 
+module CLA_4bit(Sum, Cout, Prop_Val, Gen_Val, A, B, Cin); 
     
 input [3:0] A, B;
 input Cin;
 output [3:0] Sum;
-output Prop_Val, Gen_Val;
+output Prop_Val, Gen_Val, Cout;
     
 wire [3:0] Generate, Propagate, Carry;
  
