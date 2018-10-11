@@ -9,7 +9,7 @@ wire[15:0] PC, target;
 wire[15:0] extended_i; 
 wire ovfl; 
 
-assign extended_i = {{7{0}},I};
+assign extended_i = {{6{0}},I<<1};
 
 //ADD PC +2 
 adder_16bit pc_adder(.Sum(PC),.Ovfl(ovfl),.A(PC_in),.B(16'b0000000000000010));
