@@ -7,7 +7,7 @@ output [15:0] Sum;
 output Cout;
 
 wire [3:0] Propagate, Generate;
-wire c0, c1, c2, c3
+wire c0, c1, c2, c3;
 
 //TODO: look at chapter 8.6 for logic
 CLA_4bit CLA1(.Sum(Sum[3:0]), .Prop_Val(Propagate[0]), .Gen_Val(Generate[0]), .A(A[3:0]), .B(B[3:0]), .Cin(c0));
@@ -18,8 +18,8 @@ CLA_4bit CLA4(.Sum(Sum[15:12]),  .Prop_Val(Propagate[3]), .Gen_Val(Generate[3]),
 
 //logic here for CIN
 assign c0 = Cin; 
-assign c1 = Generate[0] | (Propogate[0] & c0);
-assign c2 = Generate[1] | (Propogate[1] & Generate[0]) | (Propogate[1] & Propogate[0] & c0);
+assign c1 = Generate[0] | (Propagate[0] & c0);
+assign c2 = Generate[1] | (Propagate[1] & Generate[0]) | (Propagate[1] & Propagate[0] & c0);
 assign c3 = Generate[2] | (Propagate[2] & Generate[1]) | (Propagate[2] & Propagate[1] & Generate[0]) | (Propagate[2] & Propagate[1] & Propagate[0] & c0); 
 
 //Cout
