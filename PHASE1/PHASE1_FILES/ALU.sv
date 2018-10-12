@@ -15,10 +15,10 @@ wire overflow, overflow2;
 //ALL MODULES
 
 //ADD 
-addsub_16bit adder(.Ovfl(overflow), .Sum(sum), .A(ALU_In1), .B(ALU_In2), .sub(1'b0));
+addsub_16bit adder(.Ovfl(overflow), .Sum(sum), .A(ALU_In1), .B(ALU_In2), .Sub(1'b0));
 
 //SUB
-addsub_16bit subber(.Ovfl(overflow2), .Sum(diff), .A(ALU_In1), .B(ALU_In2), .sub(1'b1));
+addsub_16bit subber(.Ovfl(overflow2), .Sum(diff), .A(ALU_In1), .B(ALU_In2), .Sub(1'b1));
 
 //RED
 RED_16bit redder(.A(ALU_In1), .B(ALU_In2), .Sum(red_out));
@@ -27,7 +27,7 @@ RED_16bit redder(.A(ALU_In1), .B(ALU_In2), .Sum(red_out));
 PSA_16bit PSA(.Sum(padsub_out), .A(ALU_In1), .B(ALU_In2));
 
 //SHIFTER
-Shifter shifter(.Shift_Out(shift_out), .Shift_In(ALU_In1), .Shift_Val(ALU_In2), .Mode(shift_mode));
+Shifter shifter(.Shift_Out(shift_out), .Shift_In(ALU_In1), .Shift_Val(ALU_In2[3:0]), .Mode(shift_mode));
 
 always@(*) begin 
 // default values (why dont we put these in the default case below?) 

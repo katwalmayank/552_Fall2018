@@ -10,10 +10,10 @@ wire [3:0] Propagate, Generate;
 wire c0, c1, c2, c3;
 
 //TODO: look at chapter 8.6 for logic
-CLA_4bit CLA1(.Sum(Sum[3:0]), .Prop_Val(Propagate[0]), .Gen_Val(Generate[0]), .A(A[3:0]), .B(B[3:0]), .Cin(c0));
-CLA_4bit CLA2(.Sum(Sum[7:4]),  .Prop_Val(Propagate[1]), .Gen_Val(Generate[1]), .A(A[7:4]), .B(B[7:4]), .Cin(c1));
-CLA_4bit CLA3(.Sum(Sum[11:8]),  .Prop_Val(Propagate[2]), .Gen_Val(Generate[2]), .A(A[11:8]), .B(B[11:8]), .Cin(c2));
-CLA_4bit CLA4(.Sum(Sum[15:12]),  .Prop_Val(Propagate[3]), .Gen_Val(Generate[3]), .A(A[15:12]), .B(B[15:12]), .Cin(c3));
+CLA_4bit CLA1(.Sum(Sum[3:0]), .Prop_Val(Propagate[0]), .Gen_Val(Generate[0]), .A(A[3:0]), .B(B[3:0]), .Cin(c0), .Cout());
+CLA_4bit CLA2(.Sum(Sum[7:4]),  .Prop_Val(Propagate[1]), .Gen_Val(Generate[1]), .A(A[7:4]), .B(B[7:4]), .Cin(c1), .Cout());
+CLA_4bit CLA3(.Sum(Sum[11:8]),  .Prop_Val(Propagate[2]), .Gen_Val(Generate[2]), .A(A[11:8]), .B(B[11:8]), .Cin(c2), .Cout());
+CLA_4bit CLA4(.Sum(Sum[15:12]),  .Prop_Val(Propagate[3]), .Gen_Val(Generate[3]), .A(A[15:12]), .B(B[15:12]), .Cin(c3), .Cout());
 
 
 //logic here for CIN
