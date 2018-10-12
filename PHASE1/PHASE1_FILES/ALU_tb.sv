@@ -143,6 +143,11 @@ initial begin
 			$stop;
 		end
 		
+		if(ALU_Out == 0 && ~Flags[2])begin
+			$display("XOR did not set zero flag ALU_Out = 0x%h", ALU_Out);
+			$stop;
+		end
+		
 	end
 	
 	$display("Passed Opcode 3 for the subber");
