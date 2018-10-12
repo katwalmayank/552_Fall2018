@@ -1,6 +1,7 @@
 module addsub_16bit(Sum, A, B, Sub, Ovfl);
 
 output [15:0] Sum;
+output Ovfl;
 input [15:0] A, B;
 input Sub;
 
