@@ -1,10 +1,10 @@
-module ALU(ALU_Out, Error, ALU_In1, ALU_In2, Opcode, flags);
+module ALU(ALU_Out, Error, ALU_In1, ALU_In2, Opcode, Flags);
 
 input[15:0] ALU_In1, ALU_In2;
 input[2:0] Opcode; 
 
 //F[2] = Z	 F[1] = V	F[0] = N
-output reg[2:0] flags;
+output reg [2:0] Flags;
 output reg [15:0] ALU_Out;
 output reg Error; // Just to show overflow.......
 
@@ -41,13 +41,13 @@ Error = 1'b0;
 			Error = overflow;
 			
 			//SET Z FLAG
-			flags[2] = (ALU_Out == 16'b0); 
+			Flags[2] = (ALU_Out == 16'b0); 
 			
 			//SET V FLAG
-			flags[1] = Error; 
+			Flags[1] = Error; 
 			
 			//SET N FLAG 
-			flags[0] = ALU_Out[15]; 
+			Flags[0] = ALU_Out[15]; 
 			
 		end
 		
@@ -57,13 +57,13 @@ Error = 1'b0;
 			Error = overflow2;
 			
 			//SET Z FLAG
-			flags[2] = (ALU_Out == 16'b0); 
+			Flags[2] = (ALU_Out == 16'b0); 
 			
 			//SET V FLAG
-			flags[1] = Error; 
+			Flags[1] = Error; 
 			
 			//SET N FLAG 
-			flags[0] = ALU_Out[15];
+			Flags[0] = ALU_Out[15];
 			
 		end
 		
@@ -72,7 +72,7 @@ Error = 1'b0;
 			ALU_Out = ALU_In1 ^ ALU_In2;
 			
 			//SET Z FLAG
-			flags[2] = (ALU_Out == 16'b0);
+			Flags[2] = (ALU_Out == 16'b0);
 		end
 		
 		//RED
@@ -86,7 +86,7 @@ Error = 1'b0;
 			ALU_Out = shift_out ;
 			
 			//SET Z FLAG
-			flags[2] = (ALU_Out == 16'b0); 
+			Flags[2] = (ALU_Out == 16'b0); 
 		end
 		
 		//SHIFT RIGHT ARITHMETIC 
@@ -95,7 +95,7 @@ Error = 1'b0;
 			ALU_Out = shift_out ;
 			
 			//SET Z FLAG
-			flags[2] = (ALU_Out == 16'b0); 
+			Flags[2] = (ALU_Out == 16'b0); 
 		end
 		
 		//ROTATE RIGHT
@@ -104,7 +104,7 @@ Error = 1'b0;
 			ALU_Out = shift_out;
 			
 			//SET Z FLAG
-			flags[2] = (ALU_Out == 16'b0); 
+			Flags[2] = (ALU_Out == 16'b0); 
 		end
 		
 		//PADSUB
