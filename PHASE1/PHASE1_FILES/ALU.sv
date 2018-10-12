@@ -15,10 +15,10 @@ wire overflow, overflow2;
 //ALL MODULES
 
 //ADD 
-addsub_4bit adder(.Ovfl(overflow), .Sum(sum), .A(ALU_In1), .B(ALU_In2), .sub(1'b0));
+addsub_16bit adder(.Ovfl(overflow), .Sum(sum), .A(ALU_In1), .B(ALU_In2), .sub(1'b0));
 
 //SUB
-addsub_4bit subber(.Ovfl(overflow2), .Sum(diff), .A(ALU_In1), .B(ALU_In2), .sub(1'b1));
+addsub_16bit subber(.Ovfl(overflow2), .Sum(diff), .A(ALU_In1), .B(ALU_In2), .sub(1'b1));
 
 //RED
 RED_16bit redder(.A(ALU_In1), .B(ALU_In2), .Sum(red_out));
