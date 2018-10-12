@@ -19,7 +19,7 @@ adder_16bit add1(.sum(pc_next), .a(PC_in), .b(2));
 // (PC + 2) + I << 1
 adder_16bit add2(.sum(imm), .a(pc_next), .b(I_shift));
 
-
+//B if opcode is 0 BR if opcode is 1
 assign target = opcode ? data_in : imm;
 
 

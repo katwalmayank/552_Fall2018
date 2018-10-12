@@ -9,6 +9,7 @@ logic [1:0]opcode;
 
 PC_control PC(.opcode(opcode),.C(C[2:0]),.I(I),.F(F[2:0]),.PC_in(PC_in),.PC_out(PC_out), .data_in(data_in)); 
 
+//exhaustive case 
 initial begin	
 		for(opcode = 2'b00; opcode < 2'10; opcode++) begin
 			for(C = 3'b000; C <= 3'b111; C++) begin 
