@@ -4,9 +4,7 @@ input [15:0] PC_in;
 input [8:0] I;
 input [2:0] C, F;
 input [15:0] data_in; 
-
 input opcode; 
-
 output [15:0] PC_out;
 
 wire [15:0] I_shift, target, pc_next, imm;
