@@ -4,7 +4,7 @@ input[15:0] ALU_In1, ALU_In2;
 input[2:0] Opcode; 
 
 //F[2] = Z	 F[1] = V	F[0] = N
-output reg[2:0] flags;
+output reg [2:0] flags;
 output reg [15:0] ALU_Out;
 output reg Error; // Just to show overflow.......
 
