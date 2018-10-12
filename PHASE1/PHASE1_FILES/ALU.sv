@@ -8,7 +8,7 @@ output reg[2:0] flags;
 output reg [15:0] ALU_Out;
 output reg Error; // Just to show overflow.......
 
-wire [1:0] shift_mode;
+reg [1:0] shift_mode;
 wire [3:0] sum, diff,red_out,padsub_out,shift_out;
 wire overflow, overflow2;
 
@@ -26,7 +26,7 @@ RED_16bit redder(.A(ALU_In1), .B(ALU_In2), .Sum(red_out));
 //PADSUB
 PSA_16bit PSA(.Sum(padsub_out), .A(ALU_In1), .B(ALU_In2));
 
-//SHITER
+//SHIFTER
 Shifter shifter(.Shift_Out(shift_out), .Shift_In(ALU_In1), .Shift_Val(ALU_In2), .Mode(shift_mode));
 
 always@(*) begin 
