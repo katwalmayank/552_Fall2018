@@ -12,7 +12,7 @@ wire [1:0] shift_mode;
 wire [3:0] sum, diff,red_out,padsub_out,shift_out;
 wire overflow, overflow2;
 
-//MODULES 
+//ALL MODULES
 
 //ADD 
 addsub_4bit adder(.Ovfl(overflow), .Sum(sum), .A(ALU_In1), .B(ALU_In2), .sub(1'b0));
