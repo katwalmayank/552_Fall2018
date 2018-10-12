@@ -9,7 +9,7 @@ output reg [15:0] ALU_Out;
 output reg Error; // Just to show overflow.......
 
 reg [1:0] shift_mode;
-wire [3:0] sum, diff, red_out, padsub_out, shift_out;
+wire [15:0] sum, diff, red_out, padsub_out, shift_out;
 wire overflow, overflow2;
 
 //ALL MODULES
@@ -41,13 +41,13 @@ Error = 1'b0;
 			Error = overflow;
 			
 			//SET Z FLAG
-			flags[2] = (ALU_Out == 16'b0) ? 1'b1 : 1'b0; 
+			flags[2] = (ALU_Out == 16'b0); 
 			
 			//SET V FLAG
-			flags[1] = (Error) ? 1'b1 : 1'b0; 
+			flags[1] = Error; 
 			
 			//SET N FLAG 
-			flags[0] = (ALU_Out[15] == 1'b1) ? 1'b1 : 1'b0; 
+			flags[0] = ALU_Out[15]; 
 			
 		end
 		
@@ -57,13 +57,13 @@ Error = 1'b0;
 			Error = overflow2;
 			
 			//SET Z FLAG
-			flags[2] = (ALU_Out == 16'b0) ? 1'b1 : 1'b0; 
+			flags[2] = (ALU_Out == 16'b0); 
 			
 			//SET V FLAG
-			flags[1] = (Error) ? 1'b1 : 1'b0; 
+			flags[1] = Error; 
 			
-			//SET N FLAG
-			flags[0] = (ALU_Out[15] == 1'b1) ? 1'b1 : 1'b0;
+			//SET N FLAG 
+			flags[0] = ALU_Out[15];
 			
 		end
 		
@@ -72,7 +72,7 @@ Error = 1'b0;
 			ALU_Out = ALU_In1 ^ ALU_In2;
 			
 			//SET Z FLAG
-			flags[2] = (ALU_Out == 16'b0) ? 1'b1 : 1'b0; 
+			flags[2] = (ALU_Out == 16'b0);
 		end
 		
 		//RED
@@ -86,7 +86,7 @@ Error = 1'b0;
 			ALU_Out = shift_out ;
 			
 			//SET Z FLAG
-			flags[2] = (ALU_Out == 16'b0) ? 1'b1 : 1'b0; 
+			flags[2] = (ALU_Out == 16'b0); 
 		end
 		
 		//SHIFT RIGHT ARITHMETIC 
@@ -95,7 +95,7 @@ Error = 1'b0;
 			ALU_Out = shift_out ;
 			
 			//SET Z FLAG
-			flags[2] = (ALU_Out == 16'b0) ? 1'b1 : 1'b0; 
+			flags[2] = (ALU_Out == 16'b0); 
 		end
 		
 		//ROTATE RIGHT
@@ -104,7 +104,7 @@ Error = 1'b0;
 			ALU_Out = shift_out;
 			
 			//SET Z FLAG
-			flags[2] = (ALU_Out == 16'b0) ? 1'b1 : 1'b0; 
+			flags[2] = (ALU_Out == 16'b0); 
 		end
 		
 		//PADSUB
