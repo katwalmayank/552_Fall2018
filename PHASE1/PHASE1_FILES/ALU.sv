@@ -9,7 +9,7 @@ output reg [15:0] ALU_Out;
 output reg Error; // Just to show overflow.......
 
 reg [1:0] shift_mode;
-wire [3:0] sum, diff,red_out,padsub_out,shift_out;
+wire [3:0] sum, diff, red_out, padsub_out, shift_out;
 wire overflow, overflow2;
 
 //ALL MODULES
