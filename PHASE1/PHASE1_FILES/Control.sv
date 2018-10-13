@@ -27,8 +27,8 @@ assign Mem = (Opcode == 4'b1000 | Opcode == 4'b1001);
 // Otherwise use last three bits of Opcode
 assign ALUOp = (Mem) ? 3'b000 : Opcode[2:0];
 
-// LW, LLB, LHB, any Compute Op
-assign RegWrite = (Opcode == 4'b1000 | Opcode == 4'b1010 | Opcode == 4'b1011 | ~Opcode[3]);
+// LW, LLB, LHB, any Compute Op, PCS
+assign RegWrite = (Opcode == 4'b1000 | Opcode == 4'b1010 | Opcode == 4'b1011 | ~Opcode[3] | Opcode == 4'b1110);
 
 // This should be set to read from rd instead of rt
 // Ex. LLB, LHB

@@ -5,9 +5,9 @@ input rst_n;
 output hlt;
 output [15:0] pc;
 
-wire [15:0] instruction, pc_in, pc_out, alu_out, alu_in1, alu_in2, inst_addr, data_addr, data_out, data_in, data_w;
+wire [15:0] instruction, pc_in, pc_out, alu_out, alu_in1, alu_in2, inst_addr, data_addr, data_out, data_in, data_w, pc_inc_out;
 wire [3:0] opcode, rt, rs, mem_offset, reg1, reg2, reg1_out, reg2_out, dst_reg, dst_data;
-wire [2:0] alu_op, ALUOp;
+wire [2:0] alu_op, ALUOp, alu_flags, pc_flags;
 wire reg_w, RegDst, Branch, MemtoReg, MemWrite, ALUSrc, RegWrite, Mem, Modify;
 
 // ********** INSTRUCTIONS CURRENTLY WIRED UP **********
@@ -24,18 +24,28 @@ wire reg_w, RegDst, Branch, MemtoReg, MemWrite, ALUSrc, RegWrite, Mem, Modify;
 // 1001		SW
 // 1010		LLB
 // 1011		LHB
+// 1100		B
+// 1101		BR
+// 1110		PCS
+// 1111		HLT
 
 // PC Control
-PC_control PC(.opcode(), .data_in(), .C(), .I(), .F(), .PC_in(pc_in), .PC_out(pc_out));
+PC_control PC(.opcode(opcode[0]), .data_in(reg1_out), .C(branch_control), .I(branch_imm), .F(pc_flags), .PC_in(pc_in), .PC_out(pc_out));
 
-//dff to hold pc value 
-dff_16bit pc_dff (.q(PC_in), .d(PC_out), .wen(), .clk(clk), .rst(rst));
+assign hlt = (opcode == 4'b1111);
+
+// PC Incrementer for PCS
+adder_16bit pc_inc(.sum(pc_inc_out), .a(16'h0002), .b(pc_out));
 
 // Report current pc value
 assign pc = pc_out;
+assign pcs = (opcode == 4'b1110);
+
+// DFF to maintain pc value 
+dff_16bit pc_dff(.q(PC_in), .d(PC_out), .wen(~hlt), .clk(clk), .rst(~rst_n));
 
 // Instruction Memory
-memory1c InstMem(.data_out(instruction), .data_in(16'bx), .addr(inst_addr), .enable(1'b1), .wr(1'bx), .clk(clk), .rst(~rst_n));
+memory1c InstMem(.data_out(instruction), .data_in(16'bx), .addr(inst_addr), .enable(1'b1), .wr(1'b0), .clk(clk), .rst(~rst_n));
 
 assign inst_addr = pc_out;
 assign opcode = instruction[15:12];
@@ -44,6 +54,8 @@ assign rs = instruction[7:4];
 assign rt = (Mem) ? instruction[11:8] : instruction[3:0];
 assign mem_offset = instruction[3:0];
 assign imm = instruction[7:0];
+assign branch_control = instruction[11:9];
+assign branch_imm = instruction[8:0];
 
 // Control Unit
 Control Contr(.Opcode(opcode), .RegDst(RegDst), .Branch(Branch), .MemtoReg(MemtoReg), .ALUOp(ALUOp), .MemWrite(MemWrite),
@@ -63,16 +75,24 @@ assign reg1 = rs;
 assign reg2 = (Modify) ? rd : rt;
 assign dst_reg = (Mem) ? rt : rd;
 assign dst_data = (MemtoReg) ? data_out :
+		  (pcs) ? pc_inc_out :
 		  (~Modify) ? alu_out :
 		  (opcode == 4'b1010) ? ((reg2_out & 16'hFF00) | {8'b0, imm}) : 
 		  ((reg2_out & 16'h00FF) | {imm, 8'b0});
 assign reg_w = RegWrite;
 
 // ALU
-ALU Alu(.ALU_Out(alu_out), .Error(), .ALU_In1(alu_in1), .ALU_In2(alu_in2), .Opcode(alu_op), .Flags());
+ALU Alu(.ALU_Out(alu_out), .Error(), .ALU_In1(alu_in1), .ALU_In2(alu_in2), .Opcode(alu_op), .Flags(alu_flags));
 
 assign alu_op = ALUOp;
 assign alu_in1 = reg1_out;
 assign alu_in2 = ~ALUSrc ? reg2_out : {{12{mem_offset[3]}},  mem_offset} << 1;
+
+// Flag D-Flip-Flops
+dff Z(.q(pc_flags[2]), .d(alu_flags[2]), .wen(flags_set), .clk(clk), .rst(~rst_n));
+dff V(.q(pc_flags[1]), .d(alu_flags[1]), .wen(flags_set), .clk(clk), .rst(~rst_n));
+dff N(.q(pc_flags[0]), .d(alu_flags[0]), .wen(flags_set), .clk(clk), .rst(~rst_n));
+
+assign flags_set = ~opcode[3];
 
 endmodule

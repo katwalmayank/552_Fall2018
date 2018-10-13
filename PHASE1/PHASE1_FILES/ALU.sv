@@ -12,8 +12,6 @@ reg [1:0] shift_mode;
 wire [15:0] sum, diff, red_out, padsub_out, shift_out;
 wire overflow, overflow2;
 
-//ALL MODULES
-
 //ADD 
 addsub_16bit adder(.Ovfl(overflow), .Sum(sum), .A(ALU_In1), .B(ALU_In2), .Sub(1'b0));
 
@@ -31,8 +29,10 @@ Shifter shifter(.Shift_Out(shift_out), .Shift_In(ALU_In1), .Shift_Val(ALU_In2[3:
 
 always@(*) begin 
 // default values (why dont we put these in the default case below?) 
-ALU_Out = 4'b0;
+ALU_Out = 16'b0;
 Error = 1'b0;
+Flags = 3'b0;
+
 	case(Opcode)
 		
 		//ADDER
