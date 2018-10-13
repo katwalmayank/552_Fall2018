@@ -7,7 +7,7 @@ input Sub;
 
 wire [15:0] temp;
 wire w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15;
-wire both_pos, both_neg, overflow;
+wire both_pos, both_neg;
 
 full_adder_1bit FA0(.c_out(w0), .sum(temp[0]), .a(A[0]), .b(B[0] ^ Sub), .c_in(Sub));
 full_adder_1bit FA1(.c_out(w1), .sum(temp[1]), .a(A[1]), .b(B[1] ^ Sub), .c_in(w0));
@@ -30,10 +30,10 @@ full_adder_1bit FA15(.c_out(w15), .sum(temp[15]), .a(A[15]), .b(B[15] ^ Sub), .c
 assign both_pos = ~A[15] & ~B[15];
 assign both_neg = A[15] & B[15];
 assign Ovfl = w14 ^ w15;
-assign Sum = (overflow & both_pos & ~Sub) ? 16'h7FFF :
-	     (overflow & both_neg & ~Sub) ? 16'h8000 :
-             (overflow & A[15] & ~B[15] & Sub) ? 16'h8000 :
-	     (overflow & ~A[15] & B[15] & Sub) ? 16'h7FFF :	
+assign Sum = (Ovfl & both_pos & ~Sub) ? 16'h7FFF :
+	     (Ovfl & both_neg & ~Sub) ? 16'h8000 :
+             (Ovfl & A[15] & ~B[15] & Sub) ? 16'h8000 :
+	     (Ovfl & ~A[15] & B[15] & Sub) ? 16'h7FFF :	
 	      temp;
 
 endmodule
