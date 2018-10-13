@@ -32,7 +32,5 @@ assign PC_out = (C == 3'b000 & (~F[2]))  			 ? target :
 		(C == 3'b101 & (F[2] | F[0]))			 ? target : 
 		(C == 3'b110 & (F[1])) 				 ? target : 
 		(C == 3'b111) 					 ? target : 
-		pc_next;
-
-		
+		pc_next;	
 endmodule
