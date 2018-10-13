@@ -34,4 +34,4 @@ assign RegWrite = (Opcode == 4'b1000 | Opcode == 4'b1010 | Opcode == 4'b1011 | ~
 // Ex. LLB, LHB
 assign Modify = (Opcode == 4'b1010 | Opcode == 4'b1011);
 
-endmodule;
+endmodule
