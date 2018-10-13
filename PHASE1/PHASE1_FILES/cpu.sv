@@ -28,6 +28,9 @@ wire reg_w, RegDst, Branch, MemtoReg, MemWrite, ALUSrc, RegWrite, Mem, Modify;
 // PC Control
 PC_control PC(.opcode(), .data_in(), .C(), .I(), .F(), .PC_in(pc_in), .PC_out(pc_out));
 
+//dff to hold pc value 
+dff_16bit pc_dff (.q(PC_in), .d(PC_out), .wen(), .clk(clk), .rst(rst));
+
 // Report current pc value
 assign pc = pc_out;
 
