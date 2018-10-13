@@ -19,7 +19,7 @@ CLA_4bit CLA2(.Sum(BD_Top), .Cout(bd2_c), .A(A[7:4]), .B(B[7:4]), .Cin(bd1_c), .
 CLA_4bit CLA3(.Sum(AC_Bottom), .Cout(ac1_c), .A(A[11:8]), .B(B[11:8]), .Cin(1'b0), .Prop_Val(), .Gen_Val());
 
 // AAAA + CCCC - top
-CLA_4bit CLA4(.Sum(AC_Top), .Cout(ac2_c), .A(A[11:8]), .B(B[11:8]), .Cin(ac1_c), .Prop_Val(), .Gen_Val());
+CLA_4bit CLA4(.Sum(AC_Top), .Cout(ac2_c), .A(A[15:12]), .B(B[15:12]), .Cin(ac1_c), .Prop_Val(), .Gen_Val());
 
 // Concat (BBBBBBBB + DDDDDDDD)
 assign bottom_half = {bd2_c, BD_Top, BD_Bottom};
