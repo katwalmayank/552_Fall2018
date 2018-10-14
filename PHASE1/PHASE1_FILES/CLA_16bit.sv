@@ -1,10 +1,11 @@
-module CLA_16bit(A, B, Cin, Sum, Cout); 
+module CLA_16bit(A, B, Cin, Sum, Cout, overflow); 
 
 
 input [15:0] A, B;
 input Cin;
 output [15:0] Sum;
 output Cout;
+output overflow; 
 
 wire [3:0] Propagate, Generate;
 wire c0, c1, c2, c3;
@@ -25,6 +26,7 @@ assign c3 = Generate[2] | (Propagate[2] & Generate[1]) | (Propagate[2] & Propaga
 //Cout
 assign Cout = Generate[3] | (Propagate[3] & Generate[2]) | (Propagate[3] & Propagate[2] & Generate[1]) | (Propagate[3] & Propagate[2] & Propagate[1] & Generate[0]) |(Propagate[3] & Propagate[2] & Propagate[1] & Propagate[0] & c0);
 
-
+//Overflow
+assign overflow = Cout ^ c3; 
 
 endmodule

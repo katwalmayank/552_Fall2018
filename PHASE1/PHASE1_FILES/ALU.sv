@@ -13,10 +13,13 @@ wire [15:0] sum, diff, red_out, padsub_out, shift_out;
 wire overflow, overflow2;
 
 //ADD 
-addsub_16bit adder(.Ovfl(overflow), .Sum(sum), .A(ALU_In1), .B(ALU_In2), .Sub(1'b0));
+//addsub_16bit adder(.Ovfl(overflow), .Sum(sum), .A(ALU_In1), .B(ALU_In2), .Sub(1'b0));
+CLA_16bit adder(.A(ALU_In1), .B(ALU_In2), .Cin(1'b0), .Sum(sum), .overflow(overflow)); 
+
 
 //SUB
 addsub_16bit subber(.Ovfl(overflow2), .Sum(diff), .A(ALU_In1), .B(ALU_In2), .Sub(1'b1));
+
 
 //RED
 RED_16bit redder(.A(ALU_In1), .B(ALU_In2), .Sum(red_out));
