@@ -5,10 +5,13 @@ input rst_n;
 output hlt;
 output [15:0] pc;
 
-wire [15:0] instruction, pc_in, pc_out, alu_out, alu_in1, alu_in2, inst_addr, data_addr, data_out, data_in, data_w, pc_inc_out;
-wire [3:0] opcode, rt, rs, mem_offset, reg1, reg2, reg1_out, reg2_out, dst_reg, dst_data;
-wire [2:0] alu_op, ALUOp, alu_flags, pc_flags;
-wire reg_w, RegDst, Branch, MemtoReg, MemWrite, ALUSrc, RegWrite, Mem, Modify;
+wire [15:0] instruction, pc_in, pc_out, alu_out, alu_in1, alu_in2, inst_addr, data_addr, data_out, data_in, pc_inc_out, reg1_out, reg2_out, dst_data;
+wire [3:0] opcode, rt, rs, rd, mem_offset, reg1, reg2, dst_reg;
+wire [2:0] alu_op, ALUOp, alu_flags, pc_flags, branch_control;
+wire reg_w, RegDst, Branch, MemtoReg, MemWrite, ALUSrc, RegWrite, Mem, Modify, pcs, data_w, Shift;
+wire [8:0] branch_imm;
+wire [7:0] imm;
+
 
 // ********** INSTRUCTIONS CURRENTLY WIRED UP **********
 // Opcode	Instr
@@ -36,15 +39,15 @@ wire reg_w, RegDst, Branch, MemtoReg, MemWrite, ALUSrc, RegWrite, Mem, Modify;
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //			OPCODE FOR Branch	   B or BR addr        Condition to check  Branch Imm Val  Flags set	 PC val         Final PC val
-PC_control PC(.opcode(opcode[0]), .data_in(reg1_out), .C(branch_control), .I(branch_imm), .F(pc_flags), .PC_in(pc_in), .PC_out(pc_out));
+PC_control PC(.opcode(opcode), .data_in(reg1_out), .C(branch_control), .I(branch_imm), .F(pc_flags), .PC_in(pc_in), .PC_out(pc_out));
 
 assign hlt = (opcode == 4'b1111);
 
 // PC Incrementer for PCS
-adder_16bit pc_inc(.sum(pc_inc_out), .a(16'h0002), .b(pc_out));
+adder_16bit pc_inc(.sum(pc_inc_out), .a(16'h0002), .b(pc_in));
 
 // Report current pc value
-assign pc = pc_out;
+assign pc = pc_in;
 assign pcs = (opcode == 4'b1110);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +56,7 @@ assign pcs = (opcode == 4'b1110);
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //				  PC out     PC IN       HALT?       clk        rst_n
-dff_16bit pc_dff(.q(PC_in), .d(PC_out), .wen(~hlt), .clk(clk), .rst(~rst_n));
+dff_16bit pc_dff(.q(pc_in), .d(pc_out), .wen(~hlt), .clk(clk), .rst(~rst_n));
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -63,7 +66,7 @@ dff_16bit pc_dff(.q(PC_in), .d(PC_out), .wen(~hlt), .clk(clk), .rst(~rst_n));
 //               Instruction to execute   datain          Address of the insturction			
 memory1c InstMem(.data_out(instruction), .data_in(16'bx), .addr(inst_addr), .enable(1'b1), .wr(1'b0), .clk(clk), .rst(~rst_n));
 
-assign inst_addr = pc_out;
+assign inst_addr = pc_in;
 assign opcode = instruction[15:12];
 assign rd = instruction[11:8];
 assign rs = instruction[7:4];
@@ -80,7 +83,7 @@ assign branch_imm = instruction[8:0];
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Control Contr(.Opcode(opcode), .RegDst(RegDst), .Branch(Branch), .MemtoReg(MemtoReg), .ALUOp(ALUOp), .MemWrite(MemWrite),
-		.ALUSrc(ALUSrc), .RegWrite(RegWrite), .Mem(Mem), .Modyify(Modify));
+		.ALUSrc(ALUSrc), .RegWrite(RegWrite), .Mem(Mem), .Modify(Modify), .Shift(Shift));
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -122,7 +125,8 @@ ALU Alu(.ALU_Out(alu_out), .Error(), .ALU_In1(alu_in1), .ALU_In2(alu_in2), .Opco
 
 assign alu_op = ALUOp;
 assign alu_in1 = reg1_out;
-assign alu_in2 = ~ALUSrc ? reg2_out : {{12{mem_offset[3]}},  mem_offset} << 1;
+assign alu_in2 = ALUSrc ? {{12{mem_offset[3]}},  mem_offset} << 1 :
+		 Shift ? mem_offset : reg2_out;
 
 // Flag D-Flip-Flops
 dff Z(.q(pc_flags[2]), .d(alu_flags[2]), .wen(flags_set), .clk(clk), .rst(~rst_n));
