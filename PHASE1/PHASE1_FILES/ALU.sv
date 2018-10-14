@@ -14,7 +14,7 @@ wire overflow, overflow2;
 
 //ADD 
 //addsub_16bit adder(.Ovfl(overflow), .Sum(sum), .A(ALU_In1), .B(ALU_In2), .Sub(1'b0));
-CLA_16bit adder(.A(ALU_In1), .B(ALU_In2), .Cin(1'b0), .Sum(sum), .overflow(overflow)); 
+CLA_16bit adder(.A(ALU_In1), .B(ALU_In2), .Cin(1'b0), .Sum(sum), .overflow(overflow), .Cout()); 
 
 //SUB
 addsub_16bit subber(.Ovfl(overflow2), .Sum(diff), .A(ALU_In1), .B(ALU_In2), .Sub(1'b1));
