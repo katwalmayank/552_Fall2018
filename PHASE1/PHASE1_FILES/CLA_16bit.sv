@@ -31,6 +31,6 @@ assign Cout = Generate[3] | (Propagate[3] & Generate[2]) | (Propagate[3] & Propa
 assign both_pos = ~A[15] & ~B[15];
 assign both_neg = A[15] & B[15];
 assign overflow = Cout ^ c3; 
-assign Sum = (overflow & both_pos) ? 16'h7FFF :
-	     (overflow & both_neg) ? 16'h8000 : temp;
+assign Sum = (temp[15] & both_pos) ? 16'h7FFF :
+	     (~temp[15] & both_neg) ? 16'h8000 : temp;
 endmodule

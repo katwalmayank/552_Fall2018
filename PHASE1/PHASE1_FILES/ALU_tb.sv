@@ -94,14 +94,14 @@ initial begin
 			$stop;
 		end
 		
-		//if(ALU_Out == 16'h8000 || ALU_Out == 16'h7FFF)
-			//$display("ALU_In1 0x%h ALU_In2 0x%h ALU_Out 0x%h", ALU_In1, ALU_In2, ALU_Out);
+		if(ALU_Out == 16'h8000 || ALU_Out == 16'h7FFF)
+			$display("ALU_In1 0x%h ALU_In2 0x%h ALU_Out 0x%h", ALU_In1, ALU_In2, ALU_Out);
 	end
 	
 	ALU_In1 = 16'h8000;
 	ALU_In2 = 16'h8001;
 	#10;
-	//$display("Edge case ALU_In1 0x%h ALU_In2 0x%h ALU_Out 0x%h", ALU_In1, ALU_In2, ALU_Out);
+	$display("Edge case ALU_In1 0x%h ALU_In2 0x%h ALU_Out 0x%h", ALU_In1, ALU_In2, ALU_Out);
 	$display("Passed Opcode 0 for the adder");
 	
 ///////////////////////////////////////////////////////////////////////////////////////////
