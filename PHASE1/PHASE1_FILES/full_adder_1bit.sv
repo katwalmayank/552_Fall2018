@@ -1,9 +1,9 @@
-module full_adder_1bit(c_out, sum, a, b, c_in);
+module full_adder_1bit(Sum, Cin, Cout, A, B);
 
-output sum, c_out;
-input a, b, c_in;
+input  A, B, Cin; 
+output Cout, Sum;  
 
-assign sum = a ^ b ^ c_in;
-assign c_out = (a & b) | (a & c_in) | (b & c_in);
+assign Cout = (B&Cin) | (A&Cin) | (A&B);
+assign Sum = (A&~B&~Cin)|(~A&B&~Cin)| (~A&~B&Cin)| (A&B&Cin) ; 
 
 endmodule
