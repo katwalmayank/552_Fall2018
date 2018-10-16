@@ -30,7 +30,7 @@ assign Cout = Generate[3] | (Propagate[3] & Generate[2]) | (Propagate[3] & Propa
 //Overflow
 assign both_pos = ~A[15] & ~B[15];
 assign both_neg = A[15] & B[15];
-assign overflow = Cout ^ c3; 
+assign overflow = (temp[15] & both_pos | ~temp[15] & both_neg);
 assign Sum = (temp[15] & both_pos) ? 16'h7FFF :
 	     (~temp[15] & both_neg) ? 16'h8000 : temp;
 endmodule
