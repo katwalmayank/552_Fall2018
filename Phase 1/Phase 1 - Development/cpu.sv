@@ -8,7 +8,7 @@ output [15:0] pc;
 wire [15:0] instruction, pc_in, pc_out, alu_out, alu_in1, alu_in2, inst_addr, data_addr, data_out, data_in, pc_inc_out, reg1_out, reg2_out, dst_data;
 wire [3:0] opcode, rt, rs, rd, mem_offset, reg1, reg2, dst_reg;
 wire [2:0] alu_op, ALUOp, alu_flags, pc_flags, branch_control;
-wire reg_w, RegDst, Branch, MemtoReg, MemWrite, ALUSrc, RegWrite, Mem, Modify, pcs, data_w, Shift;
+wire reg_w, MemtoReg, MemWrite, ALUSrc, RegWrite, Mem, Modify, pcs, data_w, Shift;
 wire [8:0] branch_imm;
 wire [7:0] imm;
 
@@ -82,7 +82,7 @@ assign branch_imm = instruction[8:0];
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Control Contr(.Opcode(opcode), .RegDst(RegDst), .Branch(Branch), .MemtoReg(MemtoReg), .ALUOp(ALUOp), .MemWrite(MemWrite),
+Control Contr(.Opcode(opcode), .MemtoReg(MemtoReg), .ALUOp(ALUOp), .MemWrite(MemWrite),
 		.ALUSrc(ALUSrc), .RegWrite(RegWrite), .Mem(Mem), .Modify(Modify), .Shift(Shift));
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

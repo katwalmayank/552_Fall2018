@@ -1,12 +1,8 @@
-module Control(Opcode, RegDst, Branch, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Mem, Modify, Shift);
+module Control(Opcode, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Mem, Modify, Shift);
 
 input [3:0] Opcode;
 output [2:0] ALUOp;
-output RegDst, Branch, MemtoReg, MemWrite, ALUSrc, RegWrite, Mem, Modify, Shift;
-
-// Unused at the moment, maybe we replace Mem with this at some point?
-//assign RegDst = 
-//assign Branch = 
+output MemtoReg, MemWrite, ALUSrc, RegWrite, Mem, Modify, Shift;
 
 // LW
 assign MemtoReg = (Opcode == 4'b1000);
