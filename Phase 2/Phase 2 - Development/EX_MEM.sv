@@ -1,4 +1,4 @@
-module EX_MEM(ex_mem_in_mem_write, ex_mem_in_mem_read, ex_mem_in_mem_to_reg, ex_mem_in_reg_write, ex_mem_in_alu_val, rst_n, write_en, clk
+module EX_MEM(ex_mem_in_mem_write, ex_mem_in_mem_read, ex_mem_in_mem_to_reg, ex_mem_in_reg_write, ex_mem_in_alu_val, rst_n, write_en, clk,
 			  ex_mem_out_mem_write, ex_mem_out_mem_read, ex_mem_out_mem_to_reg, ex_mem_out_reg_write, ex_mem_out_alu_val);
 
 input ex_mem_in_mem_write;
