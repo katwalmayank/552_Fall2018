@@ -23,24 +23,24 @@ module ID_EX(
 );
 
 // MemtoReg
-dff FF_(.q(ID_MemtoReg), .d(EX_MemtoReg), .wen(wen), .clk(clk), .rst(~rst_n));
+dff FF_MemtoReg(.q(ID_MemtoReg), .d(EX_MemtoReg), .wen(wen), .clk(clk), .rst(~rst_n));
 // MemWrite
-dff FF_(.q(ID_MemWrite), .d(EX_MemWrite), .wen(wen), .clk(clk), .rst(~rst_n));
+dff FF_MemWrite(.q(ID_MemWrite), .d(EX_MemWrite), .wen(wen), .clk(clk), .rst(~rst_n));
 // ALUSrc
-dff FF_(.q(ID_ALUSrc), .d(EX_ALUSrc), .wen(wen), .clk(clk), .rst(~rst_n));
+dff FF_ALUSrc(.q(ID_ALUSrc), .d(EX_ALUSrc), .wen(wen), .clk(clk), .rst(~rst_n));
 // RegWrite
-dff FF_(.q(ID_RegWrite), .d(EX_RegWrite), .wen(wen), .clk(clk), .rst(~rst_n));
+dff FF_RegWrite(.q(ID_RegWrite), .d(EX_RegWrite), .wen(wen), .clk(clk), .rst(~rst_n));
 // Mem
-dff FF_(.q(ID_Mem), .d(EX_Mem), .wen(wen), .clk(clk), .rst(~rst_n));
+dff FF_Mem(.q(ID_Mem), .d(EX_Mem), .wen(wen), .clk(clk), .rst(~rst_n));
 // Modify
-dff FF_(.q(ID_Modify), .d(EX_Modify), .wen(wen), .clk(clk), .rst(~rst_n));
+dff FF_Modify(.q(ID_Modify), .d(EX_Modify), .wen(wen), .clk(clk), .rst(~rst_n));
 // Shift
-dff FF_(.q(ID_Shift), .d(EX_Shift), .wen(wen), .clk(clk), .rst(~rst_n));
+dff FF_Shift(.q(ID_Shift), .d(EX_Shift), .wen(wen), .clk(clk), .rst(~rst_n));
 
 // Read Data 1
-dff_16bit FF_(.q(IF_ReadData1), .d(EX_ReadData1), .wen(wen), .clk(clk), .rst(~rst_n));
+dff_16bit FF_ReadData1(.q(IF_ReadData1), .d(EX_ReadData1), .wen(wen), .clk(clk), .rst(~rst_n));
 // Read Data 2
-dff_16bit FF_(.q(IF_ReadData2), .d(EX_ReadData2), .wen(wen), .clk(clk), .rst(~rst_n));
+dff_16bit FF_ReadData2(.q(IF_ReadData2), .d(EX_ReadData2), .wen(wen), .clk(clk), .rst(~rst_n));
 
 
 
