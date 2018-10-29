@@ -70,7 +70,7 @@ dff_16bit FF_ReadData1(.q(EX_ReadData1), .d(ID_ReadData1), .wen(wen), .clk(clk),
 // Read Data 2
 dff_16bit FF_ReadData2(.q(EX_ReadData2), .d(ID_ReadData2), .wen(wen), .clk(clk), .rst(~rst_n));
 // Rs
-dff_4bit FF_Rt(.q(EX_Rs), .d(ID_Rs), .wen(wen), .clk(clk), .rst(~rst_n));
+dff_4bit FF_Rs(.q(EX_Rs), .d(ID_Rs), .wen(wen), .clk(clk), .rst(~rst_n));
 // Rt
 dff_4bit FF_Rt(.q(EX_Rt), .d(ID_Rt), .wen(wen), .clk(clk), .rst(~rst_n));
 // Rd

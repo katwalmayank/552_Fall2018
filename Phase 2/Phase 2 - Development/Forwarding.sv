@@ -19,10 +19,11 @@ assign Forward_A =  (EX_forward_A) ? 2'b10:
 					2'b00; 							//no forwarding 
 
 
+
 assign Forward_B =  (MEM_MEM_forward_B) ? 2'b11:	//only RD reg forwarded
-					(EX_forward_B) ? 2'b10:
-				    (MEM_EX_forward_B) ? 2'b01:
-					2'b00; 							//no forwarding  
+		    (EX_forward_B)      ? 2'b10:
+		    (MEM_EX_forward_B)  ? 2'b01:
+					  2'b00; 							//no forwarding  
 
 
 					
