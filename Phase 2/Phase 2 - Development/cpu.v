@@ -7,12 +7,13 @@ output [15:0] pc;
 
 wire [15:0] ID_inst, pc_in, IF_pc, alu_out, alu_in1, alu_in2, inst_addr, data_addr, data_out, data_in, pc_inc_out, reg1_out, reg2_out, dst_data, IF_inst,
  ID_pc, EX_ReadData1, EX_ReadData2, MEM_ReadData2, MEM_ALUval, WB_DstData,ID_pc_inc_out, EX_pc_inc_out, EX_ALUval, WB_ALUval, WB_ReadData;
-wire [3:0] opcode, rt, rs, rd, mem_offset, reg1, reg2, dst_reg, EX_MemOffset, WB_DstReg, EX_opcode, EX_Rt, EX_Rd, EX_DstReg, MEM_DstReg;
+wire [3:0] opcode, rt, rs, rd, mem_offset, reg1, reg2, dst_reg, EX_MemOffset, WB_DstReg, EX_opcode, EX_Rs, EX_Rt, EX_Rd, EX_DstReg, MEM_DstReg;
 wire [2:0] alu_op, ALUOp, alu_flags, pc_flags, branch_control, EX_ALUOp;
 wire reg_w, MemtoReg, MemWrite, ALUSrc, RegWrite, Mem, Modify, pcs, data_w, Shift, EX_MemtoReg, EX_MemWrite, EX_ALUSrc, EX_RegWrite, EX_Mem, EX_Modify, EX_Shift,
 MEM_MemWrite, MEM_MemRead, MEM_MemtoReg, MEM_RegWrite, WB_RegWrite;
 wire [8:0] branch_imm;
 wire [7:0] imm, EX_Imm;
+wire [1:0] Forward_A, Forward_B;
 
 
 // ********** INSTRUCTIONS CURRENTLY WIRED UP **********
@@ -132,6 +133,7 @@ ID_EX ID_EX(
 	.ID_ReadData2(reg2_out),
 	.ID_MemOffset(mem_offset),
 	.ID_PCS(pcs),
+	.ID_Rs(rs),
 	.ID_Rt(rt),
 	.ID_Rd(rd),
 	.ID_Imm(imm),
@@ -149,6 +151,7 @@ ID_EX ID_EX(
 	.EX_ReadData2(EX_ReadData2),
 	.EX_MemOffset(EX_MemOffset),
 	.EX_PCS(EX_PCS),
+	.EX_Rs(EX_Rs),
 	.EX_Rt(EX_Rt),
 	.EX_Rd(EX_Rd),
 	.EX_Imm(EX_Imm),
@@ -235,5 +238,19 @@ MEM_WB MEM_WB(
 );
 
 assign WB_DstData = (WB_MemtoReg) ? WB_ReadData : WB_ALUval;
+
+// Forwarding module insentiation
+Forwarding forwarding_Unit(
+	.EX_MEM_RegWrite(EX_RegWrite), 
+	.EX_MEM_RegRd(EX_Rd), 
+	.ID_EX_RegRs(Rs), 
+	.ID_EX_RegRt(Rt), 
+	.MEM_WB_RegWrite(MEM_RegWrite), 
+	.MEM_WB_RegRd(MEM_DstReg), 
+	.EX_MEM_MemWrite(EX_MemWrite), 
+	.EX_MEM_RegRt(EX_Rt),
+	.Forward_A(Forward_A), 
+	.Forward_B(Forward_B)
+);
 
 endmodule

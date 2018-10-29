@@ -19,7 +19,7 @@ output MEM_MemtoReg;
 output MEM_RegWrite;
 output [15:0] MEM_ALUval;
 output [15:0] MEM_ReadData2;
-input [3:0] MEM_DstReg;
+output [3:0] MEM_DstReg;
 
 dff mem_write(.q(MEM_MemWrite), .d(EX_MemWrite), .wen(write_en), .clk(clk), .rst(~rst_n));
 dff mem_read(.q(MEM_MemRead), .d(EX_MemRead), .wen(write_en), .clk(clk), .rst(~rst_n));
