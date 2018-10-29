@@ -241,6 +241,10 @@ MEM_WB MEM_WB(
 
 assign WB_DstData = (WB_MemtoReg) ? WB_ReadData : WB_ALUval;
 
+
+// 2 ways to forward data_addr
+// 1. We can forward the data as an input to the pipeline register and use that data in the next clock cycle
+// 2. We can forward data by using outputs of the pipelines and forward them in that clock cycle
 // Forwarding module insentiation
 Forwarding forwarding_Unit(
 	.EX_MEM_RegWrite(EX_RegWrite), 
