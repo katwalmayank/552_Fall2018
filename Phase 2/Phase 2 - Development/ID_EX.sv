@@ -14,6 +14,7 @@ module ID_EX(
 	input [15:0] ID_ReadData2,
 	input [3:0] ID_MemOffset,
 	input ID_PCS,
+	input [3:0] ID_Rs,
 	input [3:0] ID_Rt,
 	input [3:0] ID_Rd,
 	input [7:0] ID_Imm,
@@ -31,6 +32,7 @@ module ID_EX(
 	output [15:0] EX_ReadData2,
 	output [3:0] EX_MemOffset,
 	output EX_PCS,
+	output [3:0] EX_Rs,
 	output [3:0] EX_Rt,
 	output [3:0] EX_Rd,
 	output [7:0] EX_Imm,
@@ -67,6 +69,8 @@ dff_4bit FF_MemOffset(.q(EX_MemOffset), .d(ID_MemOffset), .wen(wen), .clk(clk), 
 dff_16bit FF_ReadData1(.q(EX_ReadData1), .d(ID_ReadData1), .wen(wen), .clk(clk), .rst(~rst_n));
 // Read Data 2
 dff_16bit FF_ReadData2(.q(EX_ReadData2), .d(ID_ReadData2), .wen(wen), .clk(clk), .rst(~rst_n));
+// Rs
+dff_4bit FF_Rs(.q(EX_Rs), .d(ID_Rs), .wen(wen), .clk(clk), .rst(~rst_n));
 // Rt
 dff_4bit FF_Rt(.q(EX_Rt), .d(ID_Rt), .wen(wen), .clk(clk), .rst(~rst_n));
 // Rd
