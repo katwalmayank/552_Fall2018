@@ -14,11 +14,17 @@ assign MEM_EX_forward_B = (MEM_WB_RegWrite & (MEM_WB_RegRd != 0) & (MEM_WB_RegRd
 assign MEM_MEM_forward_B = (EX_MEM_MemWrite & MEM_WB_RegWrite & (MEM_WB_RegRd != 0) & (MEM_WB_RegRd == EX_MEM_RegRt));
 
 
+<<<<<<< HEAD
 
 
 assign Forward_A =  (EX_forward_A)     ? 2'b10:
 		    (MEM_EX_forward_A) ? 2'b01:
 					 2'b00; 							//no forwarding 
+=======
+assign Forward_A =  (EX_forward_A) ? 2'b10:
+				    (MEM_EX_forward_A) ? 2'b01:
+					2'b00; 							//no forwarding 
+>>>>>>> 316a96bba51e36910da33a03c4390c24b1b31279
 
 
 assign Forward_B =  (MEM_MEM_forward_B) ? 2'b11:	//only RD reg forwarded
@@ -26,4 +32,6 @@ assign Forward_B =  (MEM_MEM_forward_B) ? 2'b11:	//only RD reg forwarded
 		    (MEM_EX_forward_B)  ? 2'b01:
 					  2'b00; 							//no forwarding  
 
+
+					
 endmodule 
