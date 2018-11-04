@@ -6,7 +6,7 @@ output hlt;
 output [15:0] pc;
 
 wire [15:0] ID_inst, pc_in, IF_pc, alu_out, alu_in1, alu_in2, inst_addr, data_addr, data_out, data_in, pc_inc_out, reg1_out, reg2_out, dst_data, IF_inst,
- ID_pc, EX_ReadData1, EX_ReadData2, MEM_ReadData2, MEM_ALUval, WB_DstData,ID_pc_inc_out, EX_pc_inc_out, EX_ALUval, WB_ALUval, WB_ReadData;
+ ID_pc, EX_ReadData1, EX_ReadData2, MEM_ReadData2, MEM_ALUval, WB_DstData,ID_pc_inc_out, EX_pc_inc_out, EX_ALUval, WB_ALUval, WB_ReadData, EX_Operand1, EX_Operand2;
 wire [3:0] opcode, rt, rs, rd, mem_offset, reg1, reg2, dst_reg, EX_MemOffset, WB_DstReg, EX_opcode, EX_Rt, EX_Rd, EX_DstReg, MEM_DstReg, EX_Rs, MEM_Rt;
 wire [2:0] alu_op, ALUOp, alu_flags, pc_flags, branch_control, EX_ALUOp;
 wire reg_w, MemtoReg, MemWrite, ALUSrc, RegWrite, Mem, Modify, pcs, data_w, Shift, EX_MemtoReg, EX_MemWrite, EX_ALUSrc, EX_RegWrite, EX_Mem, EX_Modify, EX_Shift,
@@ -87,7 +87,7 @@ IF_ID IF_ID(
 assign opcode = ID_inst[15:12];
 assign rd = ID_inst[11:8];
 assign rs = ID_inst[7:4];
-assign rt = (Mem) ? ID_inst[11:8] : ID_inst[3:0];
+assign rt = (Mem | Modify) ? ID_inst[11:8] : ID_inst[3:0];
 assign mem_offset = ID_inst[3:0];
 assign imm = ID_inst[7:0];
 assign branch_control = ID_inst[11:9];
@@ -159,6 +159,13 @@ ID_EX ID_EX(
 	.EX_opcode(EX_opcode)
 );
 
+assign EX_Operand1 = (Forward_A == 2'b10) ? MEM_ALUval :	// EX TO EX
+		     (Forward_A == 2'b01) ? WB_ALUval  :	// MEM TO EX
+					    EX_ReadData1;	// Normal
+assign EX_Operand2 = (Forward_B == 2'b10) ? MEM_ALUval :	// EX TO EX
+		     (Forward_B == 2'b01) ? WB_ALUval  :	// MEM TO EX
+					    EX_ReadData2;	// Normal
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 												ALU
@@ -168,9 +175,9 @@ ID_EX ID_EX(
 ALU Alu(.ALU_Out(alu_out), .Error(), .ALU_In1(alu_in1), .ALU_In2(alu_in2), .Opcode(alu_op), .Flags(alu_flags));
 
 assign alu_op = EX_ALUOp;
-assign alu_in1 = EX_ReadData1;
+assign alu_in1 = EX_Operand1;
 assign alu_in2 = EX_ALUSrc ? {{12{EX_MemOffset[3]}},  EX_MemOffset} << 1 :
-		 EX_Shift ? EX_MemOffset : EX_ReadData2;
+		 EX_Shift ? EX_MemOffset : EX_Operand2;
 
 // Flag D-Flip-Flops
 dff Z(.q(pc_flags[2]), .d(alu_flags[2]), .wen(flags_set), .clk(clk), .rst(~rst_n));
@@ -183,9 +190,9 @@ assign EX_DstReg = (EX_Mem) ? EX_Rt : EX_Rd;
 
 //TODO: HOOK UP THE VALUE WE CHOOSE INSTEAD OF THE READ FROM DATA MEMORY
 assign EX_ALUval = (EX_PCS) ? EX_pc_inc_out :
-		  (~EX_Modify) ? EX_ALUOp :
-		  (EX_opcode == 4'b1010) ? ((EX_ReadData2 & 16'hFF00) | {8'b0, EX_Imm}) : 
-		  ((EX_ReadData2 & 16'h00FF) | {EX_Imm, 8'b0});
+		  (~EX_Modify) ? alu_out :
+		  (EX_opcode == 4'b1010) ? ((EX_Operand2 & 16'hFF00) | {8'b0, EX_Imm}) : 
+		  ((EX_Operand2 & 16'h00FF) | {EX_Imm, 8'b0});
 
 // EX/MEM Pipeline Register   //TODO: We don't want to have the write enable to be always set
 EX_MEM EX_MEM(
@@ -194,7 +201,7 @@ EX_MEM EX_MEM(
 	.EX_MemtoReg(EX_MemtoReg),
 	.EX_RegWrite(EX_RegWrite),
 	.EX_ALUval(EX_ALUval),
-	.EX_ReadData2(EX_ReadData2),
+	.EX_ReadData2(EX_Operand2),
 	.EX_Rt(EX_Rt),
 	.EX_DstReg(EX_DstReg),
 	.rst_n(rst_n),
@@ -247,14 +254,14 @@ assign WB_DstData = (WB_MemtoReg) ? WB_ReadData : WB_ALUval;
 // 2. We can forward data by using outputs of the pipelines and forward them in that clock cycle
 // Forwarding module insentiation
 Forwarding forwarding_Unit(
-	.EX_MEM_RegWrite(EX_RegWrite), 
-	.EX_MEM_RegRd(EX_Rd), 
-	.ID_EX_RegRs(Rs), 
-	.ID_EX_RegRt(Rt), 
-	.MEM_WB_RegWrite(MEM_RegWrite), 
-	.MEM_WB_RegRd(MEM_DstReg), 
-	.EX_MEM_MemWrite(EX_MemWrite), 
-	.EX_MEM_RegRt(EX_Rt),
+	.EX_MEM_RegWrite(MEM_RegWrite), 
+	.EX_MEM_RegRd(MEM_DstReg), 
+	.ID_EX_RegRs(EX_Rs), 
+	.ID_EX_RegRt(EX_Rt), 
+	.MEM_WB_RegWrite(WB_RegWrite), 
+	.MEM_WB_RegRd(WB_DstReg), 
+	.EX_MEM_MemWrite(MEM_MemWrite), 
+	.EX_MEM_RegRt(MEM_Rt),
 	.Forward_A(Forward_A), 
 	.Forward_B(Forward_B)
 );

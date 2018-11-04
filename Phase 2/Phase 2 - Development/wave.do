@@ -44,6 +44,8 @@ add wave -noupdate /cpu_tb/DUT/reg1_out
 add wave -noupdate /cpu_tb/DUT/EX_ReadData1
 add wave -noupdate /cpu_tb/DUT/reg2_out
 add wave -noupdate /cpu_tb/DUT/EX_ReadData2
+add wave -noupdate /cpu_tb/DUT/EX_Operand1
+add wave -noupdate /cpu_tb/DUT/EX_Operand2
 add wave -noupdate /cpu_tb/DUT/EX_MemtoReg
 add wave -noupdate /cpu_tb/DUT/EX_MemWrite
 add wave -noupdate /cpu_tb/DUT/EX_ALUval
@@ -84,6 +86,22 @@ add wave -noupdate /cpu_tb/DUT/WB_ALUval
 add wave -noupdate /cpu_tb/DUT/dst_data
 add wave -noupdate /cpu_tb/DUT/WB_DstData
 add wave -noupdate /cpu_tb/DUT/WB_ReadData
+add wave -noupdate -divider FORWARDING
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/EX_MEM_RegWrite
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/MEM_WB_RegWrite
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/EX_MEM_MemWrite
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/EX_MEM_RegRd
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/ID_EX_RegRs
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/ID_EX_RegRt
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/MEM_WB_RegRd
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/EX_MEM_RegRt
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/Forward_A
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/Forward_B
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/EX_forward_A
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/EX_forward_B
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/MEM_EX_forward_A
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/MEM_EX_forward_B
+add wave -noupdate /cpu_tb/DUT/forwarding_Unit/MEM_MEM_forward_B
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {450 ns} 0}
 quietly wave cursor active 1
@@ -101,4 +119,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ns} {1 us}
+WaveRestoreZoom {0 ns} {1017 ns}

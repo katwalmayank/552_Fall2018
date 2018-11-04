@@ -68,7 +68,7 @@ module cpu_tb();
     	cycle_count = cycle_count + 1;
 	if (cycle_count > 100000) begin
 		$display("hmm....more than 100000 cycles of simulation...error?\n");
-		$finish;
+		$stop;
 	end
     end
 
@@ -123,7 +123,7 @@ module cpu_tb();
             $fclose(trace_file);
             $fclose(sim_log_file);
             
-            $finish;
+            $stop;
          end else begin
             if (MemWrite) begin
                // st
@@ -168,13 +168,13 @@ module cpu_tb();
    assign MemRead =  1'b1;
    // Is memory being read, one bit signal (1 means yes, 0 means no)
    
-   assign MemWrite = DUT.MemWrite;
+   assign MemWrite = DUT.MEM_MemWrite;
    // Is memory being written to (1 bit signal)
    
-   assign MemAddress = DUT.alu_out;
+   assign MemAddress = DUT.MEM_ALUval;
    // Address to access memory with (for both reads and writes to memory, 16 bits)
    
-   assign MemData = DUT.data_in;
+   assign MemData = DUT.MEM_ReadData2;
    // Data to be written to memory for memory writes (16 bits)
    
 //   assign Halt = DUT.memory0.halt; //You won't need this because it's part of the main cpu interface
