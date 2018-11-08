@@ -9,6 +9,7 @@ output [15:0] pc;
 wire [15:0] WB_DstData;
 
 // PC Control Signals
+wire ID_halt, EX_halt, MEM_halt, WB_halt;
 wire [2:0] branch_control, pc_flags;
 wire [3:0] opcode;
 wire [8:0] branch_imm;
@@ -72,7 +73,8 @@ wire [1:0] Forward_A, Forward_B;
 PC_control PC(.opcode(opcode), .data_in(reg1_out), .C(branch_control), .I(branch_imm), .F(pc_flags), .PC_in(pc_in), .PC_out(IF_pc));
 
 //TODO: DO WE NEED TO CHANGE hlt LOGIC??
-assign hlt = (opcode == 4'b1111);
+assign hlt = WB_halt;
+assign ID_halt = (opcode == 4'b1111);
 
 // PC Incrementer for PCS
 adder_16bit pc_inc(.sum(IF_pc_inc_out), .a(16'h0002), .b(pc_in));
@@ -196,6 +198,7 @@ ID_EX ID_EX(
 	.ID_Imm(imm),
 	.ID_PC_INC_OUT(ID_pc_inc_out),
 	.ID_opcode(opcode),
+	.ID_halt(ID_halt),
 	.EX_ALUOp(EX_ALUOp),
 	.EX_MemtoReg(EX_MemtoReg),
 	.EX_MemWrite(EX_MemWrite),
@@ -213,7 +216,8 @@ ID_EX ID_EX(
 	.EX_Rd(EX_Rd),
 	.EX_Imm(EX_Imm),
 	.EX_PC_INC_OUT(EX_pc_inc_out),
-	.EX_opcode(EX_opcode)
+	.EX_opcode(EX_opcode),
+	.EX_halt(EX_halt)
 );
 
 // Forwarding MUXes
@@ -276,6 +280,7 @@ EX_MEM EX_MEM(
 	.EX_ReadData2(EX_Operand2),
 	.EX_Rt(EX_Rt),
 	.EX_DstReg(EX_DstReg),
+	.EX_halt(EX_halt),
 	.rst_n(rst_n),
 	.write_en(1'b1), 
 	.clk(clk),
@@ -286,7 +291,8 @@ EX_MEM EX_MEM(
 	.MEM_ALUval(MEM_ALUval),
 	.MEM_ReadData2(MEM_ReadData2),
 	.MEM_Rt(MEM_Rt),
-	.MEM_DstReg(MEM_DstReg)
+	.MEM_DstReg(MEM_DstReg),
+	.MEM_halt(MEM_halt)
 );
 
 
@@ -322,11 +328,13 @@ MEM_WB MEM_WB(
 	.MEM_DstReg(MEM_DstReg),
 	.MEM_ReadData(data_out), 
 	.MEM_MemtoReg(MEM_MemtoReg),
+	.MEM_halt(MEM_halt),
 	.WB_ALUval(WB_ALUval),
 	.WB_RegWrite(WB_RegWrite),	
 	.WB_DstReg(WB_DstReg),
 	.WB_ReadData(WB_ReadData), 
 	.WB_MemtoReg(WB_MemtoReg),
+	.WB_halt(WB_halt),
 	.wen(1'b1)
 );
 

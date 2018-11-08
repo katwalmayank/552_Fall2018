@@ -1,6 +1,7 @@
 module EX_MEM(EX_MemWrite, EX_MemRead, EX_MemtoReg, EX_RegWrite, EX_ALUval, EX_ReadData2, EX_Rt, EX_DstReg, rst_n, write_en, clk,
-			  MEM_MemWrite, MEM_MemRead, MEM_MemtoReg, MEM_RegWrite, MEM_ALUval, MEM_ReadData2, MEM_Rt, MEM_DstReg);
+			  MEM_MemWrite, MEM_MemRead, MEM_MemtoReg, MEM_RegWrite, MEM_ALUval, MEM_ReadData2, MEM_Rt, MEM_DstReg, EX_halt, MEM_halt);
 
+input EX_halt;
 input EX_MemWrite;
 input EX_MemRead;
 input EX_MemtoReg;
@@ -13,6 +14,7 @@ input rst_n;
 input write_en;
 input clk;
 
+output MEM_halt;
 output MEM_MemWrite;
 output MEM_MemRead;
 output MEM_MemtoReg;
@@ -22,7 +24,7 @@ output [15:0] MEM_ReadData2;
 
 output [3:0] MEM_DstReg, MEM_Rt;
 
-
+dff mem_halt(.q(MEM_halt), .d(EX_halt), .wen(write_en), .clk(clk), .rst(~rst_n));
 dff mem_write(.q(MEM_MemWrite), .d(EX_MemWrite), .wen(write_en), .clk(clk), .rst(~rst_n));
 dff mem_read(.q(MEM_MemRead), .d(EX_MemRead), .wen(write_en), .clk(clk), .rst(~rst_n));
 dff mem_to_reg(.q(MEM_MemtoReg), .d(EX_MemtoReg), .wen(write_en), .clk(clk), .rst(~rst_n));

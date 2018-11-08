@@ -20,6 +20,7 @@ module ID_EX(
 	input [7:0] ID_Imm,
 	input [15:0] ID_PC_INC_OUT,
 	input [3:0] ID_opcode,
+	input ID_halt,
 	output [2:0] EX_ALUOp,
 	output EX_MemtoReg,
 	output EX_MemWrite,
@@ -37,7 +38,8 @@ module ID_EX(
 	output [3:0] EX_Rd,
 	output [7:0] EX_Imm,
 	output [15:0] EX_PC_INC_OUT,
-	output [3:0] EX_opcode
+	output [3:0] EX_opcode,
+	output EX_halt
 );
 
 wire [3:0] temp;
@@ -84,4 +86,6 @@ dff_4bit FF_imm1(.q(EX_Imm[3:0]), .d(ID_Imm[3:0]), .wen(wen), .clk(clk), .rst(~r
 dff_4bit FF_imm2(.q(EX_Imm[7:4]), .d(ID_Imm[7:4]), .wen(wen), .clk(clk), .rst(~rst_n));
 // opcode
 dff_4bit FF_opcode(.q(EX_opcode), .d(ID_opcode), .wen(wen), .clk(clk), .rst(~rst_n));
+// halt
+dff FF_halt(.q(EX_halt), .d(ID_halt), .wen(wen), .clk(clk), .rst(~rst_n));
 endmodule
