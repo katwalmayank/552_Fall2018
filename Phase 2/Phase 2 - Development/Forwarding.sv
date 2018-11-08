@@ -1,17 +1,17 @@
-module Forwarding(EX_MEM_RegWrite, EX_MEM_RegRd, ID_EX_RegRs, ID_EX_RegRt, MEM_WB_RegWrite, MEM_WB_RegRd, EX_MEM_MemWrite, EX_MEM_RegRt,Forward_A, Forward_B);
+module Forwarding(MEM_RegWrite, MEM_RegRd, EX_RegRs, EX_RegRt, WB_RegWrite, WB_RegRd, MEM_MemWrite, MEM_RegRt,Forward_A, Forward_B);
 
-input EX_MEM_RegWrite,MEM_WB_RegWrite,EX_MEM_MemWrite;
-input[3:0] EX_MEM_RegRd, ID_EX_RegRs, ID_EX_RegRt, MEM_WB_RegRd,EX_MEM_RegRt; 
+input MEM_RegWrite,WB_RegWrite,MEM_MemWrite;
+input[3:0] MEM_RegRd, EX_RegRs, EX_RegRt, WB_RegRd,MEM_RegRt; 
 output[1:0] Forward_A, Forward_B;
 
 wire EX_forward_A, EX_forward_B, MEM_EX_forward_A, MEM_EX_forward_B, MEM_MEM_forward_B; 
 
-assign EX_forward_A =  (EX_MEM_RegWrite & (EX_MEM_RegRd != 0) & (EX_MEM_RegRd == ID_EX_RegRs));
-assign EX_forward_B =  (EX_MEM_RegWrite & (EX_MEM_RegRd != 0) & (EX_MEM_RegRd == ID_EX_RegRt));
-assign MEM_EX_forward_A = (MEM_WB_RegWrite & (MEM_WB_RegRd != 0) & (MEM_WB_RegRd == ID_EX_RegRs));
-assign MEM_EX_forward_B = (MEM_WB_RegWrite & (MEM_WB_RegRd != 0) & (MEM_WB_RegRd == ID_EX_RegRt));
+assign EX_forward_A =  (MEM_RegWrite & (MEM_RegRd != 0) & (MEM_RegRd == EX_RegRs));
+assign EX_forward_B =  (MEM_RegWrite & (MEM_RegRd != 0) & (MEM_RegRd == EX_RegRt));
+assign MEM_EX_forward_A = (WB_RegWrite & (WB_RegRd != 0) & (WB_RegRd == EX_RegRs));
+assign MEM_EX_forward_B = (WB_RegWrite & (WB_RegRd != 0) & (WB_RegRd == EX_RegRt));
 
-assign MEM_MEM_forward_B = (EX_MEM_MemWrite & MEM_WB_RegWrite & (MEM_WB_RegRd != 0) & (MEM_WB_RegRd == EX_MEM_RegRt));
+assign MEM_MEM_forward_B = (MEM_MemWrite & WB_RegWrite & (WB_RegRd != 0) & (WB_RegRd == MEM_RegRt));
 
 
 assign Forward_A =  (EX_forward_A) ? 2'b10:
