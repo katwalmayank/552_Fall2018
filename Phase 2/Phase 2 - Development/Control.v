@@ -7,7 +7,7 @@ output MemtoReg, MemRead, MemWrite, ALUSrc, RegWrite, Mem, Modify, Shift;
 // LW
 assign MemtoReg = (Opcode == 4'b1000);
 
-// LW
+// LW read signal
 assign MemRead = (Opcode == 4'b1000);
 
 // SW
