@@ -4,6 +4,7 @@ module ID_EX(
 	input wen,
 	input [2:0] ID_ALUOp,
 	input ID_MemtoReg, 
+	input ID_MemRead,
 	input ID_MemWrite, 
 	input ID_ALUSrc, 
 	input ID_RegWrite, 
@@ -23,6 +24,7 @@ module ID_EX(
 	input ID_halt,
 	output [2:0] EX_ALUOp,
 	output EX_MemtoReg,
+	output EX_MemRead,
 	output EX_MemWrite,
 	output EX_ALUSrc,
 	output EX_RegWrite,
@@ -50,6 +52,8 @@ assign EX_ALUOp = temp[2:0];
 dff_4bit FF_ALUOp(.q(temp), .d({1'b0,ID_ALUOp}), .wen(wen), .clk(clk), .rst(~rst_n));
 // MemtoReg
 dff FF_MemtoReg(.q(EX_MemtoReg), .d(ID_MemtoReg), .wen(wen), .clk(clk), .rst(~rst_n));
+// MemRead
+dff FF_MemRead(.q(EX_MemRead), .d(ID_MemRead), .wen(wen), .clk(clk), .rst(~rst_n));
 // MemWrite
 dff FF_MemWrite(.q(EX_MemWrite), .d(ID_MemWrite), .wen(wen), .clk(clk), .rst(~rst_n));
 // ALUSrc

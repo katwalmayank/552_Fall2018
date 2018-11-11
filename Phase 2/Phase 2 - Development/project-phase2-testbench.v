@@ -69,7 +69,7 @@ module cpu_ptb();
     	cycle_count = cycle_count + 1;
 	if (cycle_count > 100000) begin
 		$display("hmm....more than 100000 cycles of simulation...error?\n");
-		$finish;
+		$stop;
 	end
     end
 
@@ -120,7 +120,7 @@ module cpu_ptb();
             $fclose(trace_file);
             $fclose(sim_log_file);
 	    #5;
-            $finish;
+            $stop;
          end 
       end
       
@@ -138,7 +138,7 @@ module cpu_ptb();
    // Is processor halted (1 bit signal)
    
 
-   assign Inst = DUT.ID_inst;
+   assign Inst = DUT.IF_inst;
    //Instruction fetched in the current cycle
    
    assign RegWrite = DUT.WB_RegWrite;
@@ -150,7 +150,7 @@ module cpu_ptb();
    assign WriteData = DUT.dst_data;
    // If above is true, this should hold the Data being written to the register. (16 bits)
    
-   assign MemRead =  1'b1;
+   assign MemRead =  DUT.MEM_MemRead;
    // Is memory being read from, in this cycle. one bit signal (1 means yes, 0 means no)
    
    assign MemWrite = DUT.MEM_MemWrite;

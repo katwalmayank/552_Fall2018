@@ -1,9 +1,9 @@
-module Hazard(stall,IF_ID_RegRS, IF_ID_RegRT,ID_EX_RegRT,ID_EX_MemRead);
+module Hazard(stall, ID_RegRs, ID_RegRt, ID_MemWrite, EX_RegRt, EX_MemRead);
 
-input ID_EX_MemRead; 
-input[3:0] IF_ID_RegRS, IF_ID_RegRT,ID_EX_RegRT;
+input ID_MemWrite, EX_MemRead; 
+input[3:0] ID_RegRs, ID_RegRt, EX_RegRt;
 output stall; 
 
-assign stall = (ID_EX_MemRead & ((ID_EX_RegRT == IF_ID_RegRS) | (ID_EX_RegRT == IF_ID_RegRT))) ? 1 : 0; 
+assign stall = (EX_MemRead & ((EX_RegRt == ID_RegRs) | ((EX_RegRt == ID_RegRt) & ~ID_MemWrite))) ? 1 : 0; 
 
 endmodule 
