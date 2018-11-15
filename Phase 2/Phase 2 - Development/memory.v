@@ -52,7 +52,7 @@ module memory1c (data_out, data_in, addr, enable, wr, clk, rst);
       if (rst) begin
          //load loadfile_all.img
          if (!loaded) begin
-            $readmemh("output2.txt", mem); //loadfile_all.img
+            $readmemh("output8.txt", mem); //loadfile_all.img
             loaded = 1;
          end
           

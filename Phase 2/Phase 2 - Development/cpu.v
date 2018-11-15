@@ -9,7 +9,7 @@ output [15:0] pc;
 wire [15:0] WB_DstData;
 
 // PC Control Signals
-wire ID_halt, EX_halt, MEM_halt, WB_halt, branch_taken;
+wire ID_halt, EX_halt, MEM_halt, WB_halt, branch_taken, stall_twice;
 wire [2:0] branch_control, pc_flags;
 wire [3:0] opcode;
 wire [8:0] branch_imm;
@@ -65,7 +65,7 @@ wire [15:0] WB_ALUval, WB_ReadData;
 wire [1:0] Forward_A, Forward_B;
 
 // Hazard Unit Signals
-wire stall, hazard_stall, branch_stall, flip;
+wire stall, hazard_stall, branch_stall, flip, second_flip;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -253,7 +253,7 @@ assign alu_in2 = EX_ALUSrc ? {{12{EX_MemOffset[3]}},  EX_MemOffset} << 1 :
 ALU Alu(.ALU_Out(alu_out), .Error(), .ALU_In1(alu_in1), .ALU_In2(alu_in2), .Opcode(alu_op), .Flags(alu_flags));
 
 // Signal to check if we are setting the flags
-assign flags_set = ~EX_opcode[3];
+assign flags_set = ~EX_opcode[3] & ~stall;
 
 // Flag D-Flip-Flops
 dff Z(.q(pc_flags[2]), .d(alu_flags[2]), .wen(flags_set), .clk(clk), .rst(~rst_n));
@@ -374,13 +374,14 @@ Forwarding forwarding_Unit(
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Set stall if hazard unit detects a hazard, or we have a conditional branch
-assign stall = hazard_stall | branch_stall;
+assign stall = hazard_stall | branch_stall | (flip & ~second_flip);
 
 // Set branch stall if we are not currently in a branch stall and want to execute a conditional branch
-assign branch_stall = ~flip & (opcode == 4'b1100 | opcode == 4'b1101) & branch_control != 3'b111;
+assign branch_stall = (~flip & ~second_flip) & ((opcode == 4'b1101) | (branch_control != 3'b111 & opcode == 4'b1100));
 
 // This flip flop makes sure that the branch stall is only enabled for a single cycle
 dff flip_dff(.q(flip), .d(branch_stall), .wen(1'b1), .clk(clk), .rst(~rst_n));
+dff flip_dff2(.q(second_flip), .d(flip), .wen(1'b1), .clk(clk), .rst(~rst_n));
 
 Hazard hazard(
 	.stall(hazard_stall),
