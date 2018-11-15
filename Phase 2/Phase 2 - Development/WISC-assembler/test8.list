@@ -3,21 +3,21 @@
 	LLB R2, 0X02
 	LHB R2, 0X00	# R2 = 0x0002
 	PCS R8
-	LLB R3, 0XFC
-	LHB R3, 0X0F	# R3 = 0xFFFC
+	LLB R3, 0X04
+	LHB R3, 0X00	# R3 = 0x0004
 	LLB R4, 0X06
 	LHB R4, 0X00	# R4 = 0x0006
 	LLB R5, 0X04
 	LHB R5, 0X00	# R5 = 0x0004
 	PCS R8
-	ADD R3, R3, R2	
+	SUB R3, R3, R2	
 	BR  000, R8		# fall through second time
 	B   001, b1
 	HLT
 b1: PCS R9
 	SUB R1, R1, R5
 	BR  001, R9		# fall through second time
-	B 	000, b2
+	B 	111, b2
 	HLT
 b3: ADD R4, R4, R4	# this is not supposed to execute
 	HLT

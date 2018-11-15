@@ -9,7 +9,7 @@ output [15:0] pc;
 wire [15:0] WB_DstData;
 
 // PC Control Signals
-wire ID_halt, EX_halt, MEM_halt, WB_halt, branch_taken, stall_twice;
+wire ID_halt, EX_halt, MEM_halt, WB_halt, branch_taken;
 wire [2:0] branch_control, pc_flags;
 wire [3:0] opcode;
 wire [8:0] branch_imm;
@@ -253,7 +253,7 @@ assign alu_in2 = EX_ALUSrc ? {{12{EX_MemOffset[3]}},  EX_MemOffset} << 1 :
 ALU Alu(.ALU_Out(alu_out), .Error(), .ALU_In1(alu_in1), .ALU_In2(alu_in2), .Opcode(alu_op), .Flags(alu_flags));
 
 // Signal to check if we are setting the flags
-assign flags_set = ~EX_opcode[3] & ~stall;
+assign flags_set = ~EX_opcode[3] & EX_RegWrite;
 
 // Flag D-Flip-Flops
 dff Z(.q(pc_flags[2]), .d(alu_flags[2]), .wen(flags_set), .clk(clk), .rst(~rst_n));
