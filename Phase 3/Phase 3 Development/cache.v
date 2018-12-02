@@ -4,7 +4,7 @@ input clk, rst, cache_write, mem_data_valid, cache_meta_data1_write, cache_meta_
 input [15:0] mem_address, cache_data_in;
 
 output stall; // TODO Let FSM handle the stall?
-output [15:0] cache_data_out, missed_mem_address;
+output [15:0] cache_data_out, missed_mem_address; // data that cache has stored in both misses and hits, mem address to read data from
 
 wire way_bit, data_is_valid_on_way_1, data_is_valid_on_way_2, data_is_valid_to_write_to_cache, all_data_is_written_to_cache, cache_hit, way_to_write;
 wire [2:0] byte_offset, missed_word_block;
@@ -13,7 +13,7 @@ wire [5:0] tag;
 wire [7:0] meta_data_1_read, meta_data_2_read, meta_data_1_write, meta_data_2_write;
 
 wire [7:0] word_number;
-wire [127:0] cache_data_set, meta_data_1_block, meta_data_2_block;
+wire [127:0] cache_data_set, meta_data_1_block, meta_data_2_block, cache_miss_data_set, cache_hit_data_set;
 
 DataArray cache_data(.clk(clk), 
 					 .rst(rst), 
@@ -74,7 +74,11 @@ assign data_is_valid_on_way_2 = ((meta_data_2_read[5:0] == tag) & meta_data_2_re
 
 assign cache_hit = (data_is_valid_on_way_1 | data_is_valid_on_way_2); // check if we have a cache hit
 
-assign cache_data_set = (data_is_valid_on_way_1) ? decoder_1_set : decoder_2_set; // TODO Need modification for the cases of cache misses, only works for cache hit
+assign cache_miss_data_set = (way_to_write) ? decoder_2_set : decoder_1_set;
+
+assign cache_hit_data_set = (data_is_valid_on_way_1) ? decoder_1_set : decoder_2_set;
+
+assign cache_data_set = (cache_hit) ? cache_hit_data_set : cache_miss_data_set;
 
 assign missed_word_block = {missed_mem_address[3:1]}; // block numbers to write to the cache in case of a miss
 
