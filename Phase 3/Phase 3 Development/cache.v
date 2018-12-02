@@ -1,6 +1,6 @@
 module cache(clk, rst, cache_write, mem_address, cache_data_out, cache_data_in, stall, mem_data_valid, missed_mem_address);
 
-input clk, rst, cache_write, mem_data_valid, cache_meta_data1_write, cache_meta_data2_write;
+input clk, rst, cache_write, mem_data_valid;
 input [15:0] mem_address, cache_data_in;
 
 output stall; // TODO Let FSM handle the stall?
@@ -66,7 +66,9 @@ cache_access_decoder cache_decoder_2(.byte_offset(byte_offset),
 
 assign way_bit = ~{set[0]}; // which way in the set we want to read or write
 
-assign decoder_1_set = (set[0]) ? {set[6:1],way_bit} : set; // if set number is even then get meta data from left column else flip the bit to get data from left column
+// if set number is even then get meta data from left column else flip the bit to get data from left column
+// accessing 2 adjacent columns
+assign decoder_1_set = (set[0]) ? {set[6:1],way_bit} : set; 
 assign decoder_2_set = (set[0]) ? set : {set[6:1],way_bit};
 
 assign data_is_valid_on_way_1 = ((meta_data_1_read[5:0] == tag) & meta_data_1_read[7]); // check if data we are reading is valid
@@ -86,13 +88,16 @@ assign cache_word_block_num = (cache_hit) ? word_number : missed_word_block; // 
 
 assign meta_data_1_write = data_is_valid_on_way_1 ? {meta_data_1_read[7], 1'b0, meta_data_1_read[5:0]} : // Meta data updates to write
 						   data_is_valid_on_way_2 ? {meta_data_1_read[7], 1'b1, meta_data_1_read[5:0]} :
-						   way_to_write ? {1'b1,1'b0,tag} : {meta_data_1_read[7], 1'b1, meta_data_1_read[5:0]}; // MSB is the valid bit, the other one is the LRU bit if 0 means that we just used it if 1 means that its least recently used data
+						   way_to_write ? {meta_data_1_read[7], 1'b1, meta_data_1_read[5:0]} : {1'b1,1'b0,tag} ; // MSB is the valid bit, the other one is the LRU bit if 0 means that we just used it if 1 means that its least recently used data
 
 assign meta_data_2_write = data_is_valid_on_way_1 ? {meta_data_2_read[7], 1'b1, meta_data_2_read[5:0]} :
 						   data_is_valid_on_way_2 ? {meta_data_2_read[7], 1'b0, meta_data_2_read[5:0]} :
-						   way_to_write ? {meta_data_2_read[7], 1'b1, meta_data_2_read[5:0]} : {1'b1,1'b0,tag};
-						   
-assign way_to_write = (meta_data_1_read[6]) ? 0 : 1'b1; // 0 = way_1 , 1 = way_2;
+						   way_to_write ? {1'b1,1'b0,tag} : {meta_data_2_read[7], 1'b1, meta_data_2_read[5:0]};
+
+// prioritize valid over the LRU						   
+assign way_to_write = (meta_data_1_read[7] & ~meta_data_2_read[7]) ? 1'b1 :
+					  (~meta_data_1_read[7] & meta_data_1_read[7]) ? 0 :
+					  (meta_data_1_read[6]) ? 0: 1'b1; // 0 = way_1 , 1 = way_2|| its the way to determine the LRU used block
 
 assign byte_offset = {mem_address[2:0]};
 assign set = {mem_address[9:3]};
