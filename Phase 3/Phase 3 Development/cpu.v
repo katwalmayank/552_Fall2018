@@ -16,6 +16,7 @@ wire [8:0] branch_imm;
 wire [15:0] pc_in;
 		   
 // Instruction Memory
+wire instruction_data_valid;
 wire [15:0] inst_addr;
 
 // IF/ID Pipeline Signals
@@ -53,7 +54,7 @@ wire [15:0] EX_ALUval, EX_Operand1, EX_Operand2,
 		    MEM_ALUval, MEM_ReadData2;
 
 // Data Memory Signals
-wire data_w, data_en;
+wire data_w, data_en, mem_data_valid;
 wire [15:0] data_out, data_in, data_addr;
  
 // MEM/WB Pipeline Signals
@@ -100,7 +101,7 @@ dff_16bit pc_dff(.q(pc_in), .d(IF_pc), .wen(~stall & ~(IF_inst[15:12] == 4'b1111
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //               Instruc to execute   datain           Address of the ID_inst			
-memory1c InstMem(.data_out(IF_inst), .data_in(16'bx), .addr(inst_addr), .enable(1'b1), .wr(1'b0), .clk(clk), .rst(~rst_n));
+memory4c InstMem(.data_out(IF_inst), .data_in(16'bx), .addr(inst_addr), .enable(1'b1), .wr(1'b0), .clk(clk), .rst(~rst_n), .data_valid(instruction_data_valid));
 
 // The address of the instruction to get
 assign inst_addr = pc_in;
@@ -307,7 +308,7 @@ EX_MEM EX_MEM(
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-memory1c DataMem(.data_out(data_out), .data_in(data_in), .addr(data_addr), .enable(data_en), .wr(data_w), .clk(clk), .rst(~rst_n)); 
+memory4c DataMem(.data_out(data_out), .data_in(data_in), .addr(data_addr), .enable(data_en), .wr(data_w), .clk(clk), .rst(~rst_n), .data_valid(mem_data_valid)); 
 
 assign data_en = MEM_MemRead | MEM_MemWrite;
 
