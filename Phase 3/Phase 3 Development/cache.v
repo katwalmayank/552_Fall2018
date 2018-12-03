@@ -27,7 +27,7 @@ DataArray cache_data(.clk(clk),
 MetaDataArray cache_meta_data_1(.clk(clk), 
 							  .rst(rst), 
 							  .DataIn(meta_data_1_write), 
-							  .Write(all_data_is_written_to_cache), // we only write to meta data after cache data is written
+							  .Write(all_data_is_written_to_cache | cache_hit), // we only write to meta data after cache data is written
 							  .BlockEnable(meta_data_1_block), // the blocks meta data
 							  .DataOut(meta_data_1_read) // meta data read from the block
 );
@@ -35,7 +35,7 @@ MetaDataArray cache_meta_data_1(.clk(clk),
 MetaDataArray cache_meta_data_2(.clk(clk), 
 							  .rst(rst), 
 							  .DataIn(meta_data_2_write), 
-							  .Write(all_data_is_written_to_cache), 
+							  .Write(all_data_is_written_to_cache | cache_hit), 
 							  .BlockEnable(meta_data_2_block), 
 							  .DataOut(meta_data_2_read)
 );
