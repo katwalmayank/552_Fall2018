@@ -1,7 +1,7 @@
 SIMLOG:: Cycle           4 PC:     0000 I:     zzzz R: 0   0     0000 M: 0 0     0000     0000     0000
-SIMLOG:: Cycle           5 PC:     0000 I:     zzzz R: 0   0     0000 M: 0 0     0000     0000     0000
-SIMLOG:: Cycle           6 PC:     0000 I:     zzzz R: 0   0     0000 M: 0 0     0000     0000     0000
-SIMLOG:: Cycle           7 PC:     0000 I:     zzzz R: 0   0     0000 M: 0 0     0000     0000     0000
+SIMLOG:: Cycle           5 PC:     0000 I:     0000 R: 0   0     0000 M: 0 0     0000     0000     0000
+SIMLOG:: Cycle           6 PC:     0000 I:     0000 R: 0   0     0000 M: 0 0     0000     0000     0000
+SIMLOG:: Cycle           7 PC:     0000 I:     0000 R: 0   0     0000 M: 0 0     0000     0000     0000
 SIMLOG:: Cycle           8 PC:     0000 I:     zzzz R: 0   0     0000 M: 0 0     0000     0000     0000
 SIMLOG:: Cycle           9 PC:     0000 I:     zzzz R: 0   0     0000 M: 0 0     0000     0000     0000
 SIMLOG:: Cycle          10 PC:     0000 I:     zzzz R: 0   0     0000 M: 0 0     0000     0000     0000
@@ -10,4 +10,4 @@ SIMLOG:: Cycle          12 PC:     0000 I:     zzzz R: 0   0     0000 M: 0 0    
 SIMLOG:: Cycle          13 PC:     0000 I:     zzzz R: 0   0     0000 M: 0 0     0000     0000     0000
 SIMLOG:: Cycle          14 PC:     0000 I:     zzzz R: 0   0     0000 M: 0 0     0000     0000     0000
 SIMLOG:: Cycle          15 PC:     0000 I:     zzzz R: 0   0     0000 M: 0 0     0000     0000     0000
-SIMLOG:: Cycle          16 PC:     0000 I:     zzzz R: 0   0     0000 M: 0 0     0000     0000     0000
+SIMLOG:: Cycle          16 PC:     000X I:     zzzz R: 0   0     0000 M: 0 0     0000     0000     0000

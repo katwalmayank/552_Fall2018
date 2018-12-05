@@ -37,12 +37,12 @@ module memory4c (data_out, data_in, addr, enable, wr, clk, rst, data_valid);
    wire    data_valid_4;
    reg     data_valid_3, data_valid_2, data_valid_1;
 
-
    reg [15:0]      mem [0:2**ADDR_WIDTH-1];
    reg            loaded;
 
    assign         data_out_4 = (enable & (~wr))? {mem[addr[ADDR_WIDTH-1 :1]]}: 0; //Read
-   assign	     data_valid_4 = (enable & (~wr));
+   assign	  data_valid_4 = (enable & (~wr));
+
    initial begin
       loaded = 0;
    end
@@ -73,6 +73,7 @@ module memory4c (data_out, data_in, addr, enable, wr, clk, rst, data_valid);
                 data_valid_2 <= 0;
                 data_valid_1 <= 0;
                 data_valid <= 0;
+	
         end
         else begin
                 data_out_3 <= data_out_4;
@@ -84,7 +85,6 @@ module memory4c (data_out, data_in, addr, enable, wr, clk, rst, data_valid);
                 data_valid_2 <= data_valid_3;
                 data_valid_1 <= data_valid_2;
                 data_valid <= data_valid_1;
-
         end
   end
 

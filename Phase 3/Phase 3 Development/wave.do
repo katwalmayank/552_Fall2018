@@ -49,7 +49,6 @@ add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/chunk_count
 add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/chunk_inc
 add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/chunk_val
 add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/curr_state
-add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/delayed_next_state
 add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/fsm_busy
 add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/mem_count
 add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/mem_inc
@@ -151,7 +150,7 @@ add wave -noupdate /cpu_ptb/DUT/forwarding_Unit/MEM_MEM_forward_B
 add wave -noupdate -divider HAZARD
 add wave -noupdate /cpu_ptb/DUT/stall
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {24 ns} 0}
+WaveRestoreCursors {{Cursor 1} {690 ns} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 260
 configure wave -valuecolwidth 100
@@ -167,4 +166,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ns} {1124 ns}
+WaveRestoreZoom {158 ns} {1571 ns}
