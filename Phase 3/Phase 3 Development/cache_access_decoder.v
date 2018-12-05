@@ -1,4 +1,4 @@
-module cacheaccessdecoder(byteoffset, set, blocknumber, wordnumber);
+module cache_access_decoder(byteoffset, set, blocknumber, wordnumber);
 
 input [2:0] byteoffset;
 input [6:0] set;

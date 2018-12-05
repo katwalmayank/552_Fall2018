@@ -1,0 +1,5 @@
+SIMLOG:: Cycle           4 PC:     0000 I:     xxxx R: 0   0     0000 M: 0 0     0000     0000     0000
+SIMLOG:: Cycle           5 PC:     000X I:     xxxx R: 0   0     0000 M: 0 0     0000     0000     0000
+SIMLOG:: Cycle           6 PC:     xxxx I:     xxxx R: 0   0     0000 M: 0 0     0000     0000     0000
+SIMLOG:: Cycle           7 PC:     xxxx I:     xxxx R: 0   0     0000 M: x x     xxxx     xxxx     0000
+SIMLOG:: Cycle           8 PC:     xxxx I:     zzzz R: x   x     xxxx M: x x     xxxx     xxxx     0000

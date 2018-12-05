@@ -1,6 +1,6 @@
-module cache(clk, rst, cache_write, mem_address, cache_data_out, cache_data_in, stall, mem_data_valid, missed_mem_address);
+module cache(clk, rst_n, cache_write, mem_address, cache_data_out, cache_data_in, stall, mem_data_valid, missed_mem_address);
 
-input clk, rst, cache_write, mem_data_valid;
+input clk, rst_n, cache_write, mem_data_valid;
 input [15:0] mem_address, cache_data_in;
 
 output stall; // TODO Let FSM handle the stall?
@@ -12,11 +12,11 @@ wire [6:0] set, decoder_1_set, decoder_2_set;
 wire [5:0] tag;
 wire [7:0] meta_data_1_read, meta_data_2_read, meta_data_1_write, meta_data_2_write;
 
-wire [7:0] word_number;
+wire [7:0] word_number, cache_word_block_num;
 wire [127:0] cache_data_set, meta_data_1_block, meta_data_2_block, cache_miss_data_set, cache_hit_data_set;
 
 DataArray cache_data(.clk(clk), 
-					 .rst(rst), 
+					 .rst(~rst_n), 
 					 .DataIn(cache_data_in), // Data to write to cache
 					 .Write(data_is_valid_to_write_to_cache), // We write 2 byte for 8 times coming from FSM
 					 .BlockEnable(cache_data_set), // Which block number we are reading
@@ -25,7 +25,7 @@ DataArray cache_data(.clk(clk),
 );
 
 MetaDataArray cache_meta_data_1(.clk(clk), 
-							  .rst(rst), 
+							  .rst(~rst_n), 
 							  .DataIn(meta_data_1_write), 
 							  .Write(all_data_is_written_to_cache | cache_hit), // we only write to meta data after cache data is written
 							  .BlockEnable(meta_data_1_block), // the blocks meta data
@@ -33,7 +33,7 @@ MetaDataArray cache_meta_data_1(.clk(clk),
 );
 
 MetaDataArray cache_meta_data_2(.clk(clk), 
-							  .rst(rst), 
+							  .rst(~rst_n), 
 							  .DataIn(meta_data_2_write), 
 							  .Write(all_data_is_written_to_cache | cache_hit), 
 							  .BlockEnable(meta_data_2_block), 
@@ -41,7 +41,7 @@ MetaDataArray cache_meta_data_2(.clk(clk),
 );
 
 cache_fill_FSM cache_FSM(.clk(clk), 
-						 .rst_n(rst), 
+						 .rst_n(rst_n), 
 						 .miss_detected(~cache_hit), // if cache misses then we start getting data from memory
 						 .miss_address(mem_address), // address that missed the cache
 						 .fsm_busy(stall), // stall signal coming from the FSM for the whole CPU
@@ -52,16 +52,16 @@ cache_fill_FSM cache_FSM(.clk(clk),
 						 .memory_data_valid(mem_data_valid) // coming from the memory
 );
 
-cache_access_decoder cache_decoder_1(.byte_offset(byte_offset), 
+cache_access_decoder cache_decoder_1(.byteoffset(byte_offset), 
 								   .set(decoder_1_set), 
-								   .block_number(meta_data_1_block), 
-								   .word_number(word_number)
+								   .blocknumber(meta_data_1_block), 
+								   .wordnumber(word_number)
 );
 
-cache_access_decoder cache_decoder_2(.byte_offset(byte_offset), 
+cache_access_decoder cache_decoder_2(.byteoffset(byte_offset), 
 								   .set(decoder_2_set), 
-								   .block_number(meta_data_2_block), 
-								   .word_number() // unassigned because decoder 1 already gets the word number
+								   .blocknumber(meta_data_2_block), 
+								   .wordnumber() // unassigned because decoder 1 already gets the word number
 );
 
 assign way_bit = ~{set[0]}; // which way in the set we want to read or write
