@@ -35,13 +35,32 @@ add wave -noupdate /cpu_ptb/DUT/InstCache/meta_data_2_read
 add wave -noupdate /cpu_ptb/DUT/InstCache/meta_data_2_write
 add wave -noupdate /cpu_ptb/DUT/InstCache/missed_mem_address
 add wave -noupdate /cpu_ptb/DUT/InstCache/missed_word_block
-add wave -noupdate /cpu_ptb/DUT/InstCache/rst
 add wave -noupdate /cpu_ptb/DUT/InstCache/set
 add wave -noupdate /cpu_ptb/DUT/InstCache/stall
 add wave -noupdate /cpu_ptb/DUT/InstCache/tag
 add wave -noupdate /cpu_ptb/DUT/InstCache/way_bit
 add wave -noupdate /cpu_ptb/DUT/InstCache/way_to_write
 add wave -noupdate /cpu_ptb/DUT/InstCache/word_number
+add wave -noupdate -divider {Cache FSM}
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/clk
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/rst_n
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/miss_detected
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/chunk_count
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/chunk_inc
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/chunk_val
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/curr_state
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/delayed_next_state
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/fsm_busy
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/mem_count
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/mem_inc
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/mem_val
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/memory_address
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/memory_data
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/memory_data_valid
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/miss_address
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/next_state
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/write_data_array
+add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/write_tag_array
 add wave -noupdate -divider ID
 add wave -noupdate /cpu_ptb/DUT/ID_halt
 add wave -noupdate /cpu_ptb/DUT/ID_pc
@@ -132,7 +151,7 @@ add wave -noupdate /cpu_ptb/DUT/forwarding_Unit/MEM_MEM_forward_B
 add wave -noupdate -divider HAZARD
 add wave -noupdate /cpu_ptb/DUT/stall
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {105 ns} 0}
+WaveRestoreCursors {{Cursor 1} {24 ns} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 260
 configure wave -valuecolwidth 100
@@ -148,4 +167,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ns} {1894 ns}
+WaveRestoreZoom {0 ns} {1124 ns}
