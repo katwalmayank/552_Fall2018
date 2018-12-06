@@ -153,10 +153,10 @@ add wave -noupdate /cpu_ptb/DUT/DataCache/decoder_2_set
 add wave -noupdate /cpu_ptb/DUT/DataCache/mem_address
 add wave -noupdate /cpu_ptb/DUT/DataCache/mem_data_valid
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_block
-add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_read
-add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_write
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_2_block
+add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_read
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_2_read
+add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_write
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_2_write
 add wave -noupdate /cpu_ptb/DUT/DataCache/missed_mem_address
 add wave -noupdate /cpu_ptb/DUT/DataCache/missed_word_block
@@ -183,6 +183,7 @@ add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/chunk_count
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/chunk_inc
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/chunk_val
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/curr_state
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/next_state
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/delayed_next_state
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/fsm_busy
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/mem_count
@@ -193,7 +194,6 @@ add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/memory_data
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/memory_data_valid
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/miss_address
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/miss_detected
-add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/next_state
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/stop_mem_count
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/write_data_array
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/write_tag_array
@@ -235,7 +235,7 @@ add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/WordEnable}
 add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/Dout}
 add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/WordEnable_real}
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {213 ns} 0}
+WaveRestoreCursors {{Cursor 1} {753 ns} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 256
 configure wave -valuecolwidth 100
@@ -251,4 +251,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ns} {1417 ns}
+WaveRestoreZoom {649 ns} {2066 ns}

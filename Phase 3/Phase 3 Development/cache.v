@@ -16,12 +16,14 @@ wire [7:0] meta_data_1_read, meta_data_2_read, meta_data_1_write, meta_data_2_wr
 		   missed_word_block_4, missed_word_block_3, missed_word_block_2, missed_word_block_1;
 
 wire [7:0] word_number, cache_word_block_num;
+
+wire [15:0] cache_data_to_write;
 wire [127:0] cache_data_set, meta_data_1_block, meta_data_2_block, cache_miss_data_set, cache_hit_data_set, written_blocks, update_blocks;
 
 DataArray cache_data(.clk(clk), 
 					 .rst(~rst_n), 
-					 .DataIn(cache_data_in), // Data to write to cache
-					 .Write(data_is_valid_to_write_to_cache), // We write 2 byte for 8 times coming from FSM
+					 .DataIn(cache_data_to_write), // Data to write to cache
+					 .Write(data_is_valid_to_write_to_cache | cache_write), // We write 2 byte for 8 times coming from FSM
 					 .BlockEnable(cache_data_set), // Which block number we are reading
 					 .WordEnable(cache_word_block_num), // which word in the block we are reading
 					 .DataOut(cache_data_out) // data read from the cache
@@ -30,14 +32,14 @@ DataArray cache_data(.clk(clk),
 MetaDataArray cache_meta_data_1(.clk(clk), 
 							  .rst(~rst_n), 
 							  .DataIn(meta_data_1_write), 
-							  .Write(all_data_is_written_to_cache), //| cache_hit), // we only write to meta data after cache data is written
+							  .Write(all_data_is_written_to_cache | cache_write), //| cache_hit), // we only write to meta data after cache data is written
 							  .BlockEnable(meta_data_1_block), // the blocks meta data
 							  .DataOut(meta_data_1_read) // meta data read from the block
 );
 
 MetaDataArray cache_meta_data_2(.clk(clk), 
 							  .rst(~rst_n), 
-							  .DataIn(meta_data_2_write), 
+							  .DataIn(meta_data_2_write | cache_write), 
 							  .Write(all_data_is_written_to_cache), // | cache_hit), 
 							  .BlockEnable(meta_data_2_block), 
 							  .DataOut(meta_data_2_read)
@@ -124,6 +126,8 @@ assign update_blocks = (written_blocks | meta_data_1_block | meta_data_2_block);
 assign byte_offset = {mem_address[3:1]};
 assign set = {mem_address[9:4]};
 assign tag = {mem_address[15:10]};
+
+assign cache_data_to_write = (cache_write & (missed_word_block == word_number) | cache_hit) ? user_data_in : cache_data_in; // set cache write to zero at instruction memory
 
 
 
