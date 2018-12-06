@@ -149,8 +149,25 @@ add wave -noupdate /cpu_ptb/DUT/forwarding_Unit/MEM_EX_forward_B
 add wave -noupdate /cpu_ptb/DUT/forwarding_Unit/MEM_MEM_forward_B
 add wave -noupdate -divider HAZARD
 add wave -noupdate /cpu_ptb/DUT/stall
+add wave -noupdate -divider {Block Data}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[0]/clk}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[0]/rst}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[0]/Din}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[0]/WriteEnable}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[0]/Enable}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[0]/WordEnable}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[0]/Dout}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[0]/WordEnable_real}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/clk}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/rst}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/Din}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/WriteEnable}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/Enable}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/WordEnable}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/Dout}
+add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/WordEnable_real}
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {690 ns} 0}
+WaveRestoreCursors {{Cursor 1} {2551 ns} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 260
 configure wave -valuecolwidth 100
@@ -166,4 +183,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {158 ns} {1571 ns}
+WaveRestoreZoom {2537 ns} {3950 ns}

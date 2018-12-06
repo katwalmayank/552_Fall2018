@@ -11,13 +11,19 @@ output write_data_array; // write enable to cache data array to signal when fill
 output write_tag_array; // write enable to cachetag array to signal when all words are filled in to data array
 output [15:0] memory_address; // address to read from memory
 
-wire curr_state, next_state, delayed_next_state, stop_mem_count;
+wire curr_state, next_state, delayed_next_state, stop_mem_count, pause4, pause3, pause2, pause, blah;
 
 wire [3:0] chunk_inc, chunk_count, chunk_val;
 
 wire [15:0] mem_inc, mem_count, mem_val;
 
-assign write_data_array = memory_data_valid & miss_detected;
+assign write_data_array = memory_data_valid & miss_detected & pause & next_state;
+assign blah = miss_detected;
+
+dff dff_pause1(.q(pause4), .d(blah), .wen(1'b1), .clk(clk), .rst(~rst_n));
+dff dff_pause2(.q(pause3), .d(pause4), .wen(1'b1), .clk(clk), .rst(~rst_n));
+dff dff_pause3(.q(pause2), .d(pause3), .wen(1'b1), .clk(clk), .rst(~rst_n));
+dff dff_pause4(.q(pause), .d(pause2), .wen(1'b1), .clk(clk), .rst(~rst_n));
 
 assign write_tag_array = (chunk_count == 4'b1011) ? 1'b1 : 0;
 
@@ -33,7 +39,7 @@ assign stop_mem_count = (chunk_count == 4'b0111 | chunk_count == 4'b1000 | chunk
 addsub_16bit mem_address_incrementer(.Sum(mem_inc), .Ovfl(), .A(mem_count), .B(16'h0002 & {16{miss_detected}} & {16{~stop_mem_count}}), .Sub(1'b0));
 dff_16bit mem_access_value(.q(mem_val), .d(mem_inc), .wen(1'b1), .clk(clk), .rst(~rst_n));
 
-assign mem_count = (curr_state == 1'b1 & chunk_val != 0) ? mem_val : {miss_address[15:4], 4'h0};
+assign mem_count = (curr_state == 1'b1 & chunk_val != 0) ? memory_address : {miss_address[15:4], 4'h0};
 
 // State dff
 dff state_delay(.q(curr_state), .d(next_state), .wen(1'b1), .clk(clk), .rst(~rst_n));
@@ -44,7 +50,7 @@ assign fsm_busy = (miss_detected & (chunk_val != 4'b1100)) ? 1'b1 : 0;
 
 assign next_state = (miss_detected & (chunk_count != 4'b1100)) ? 1'b1 : 0;
 
-assign memory_address = mem_val;
+assign memory_address = (chunk_count == 0) ? mem_count : mem_val;
 //dff_16bit memory_add_delay(.q(memory_address), .d(mem_val), .wen(1'b1), .clk(clk), .rst(~rst_n));
 
 
