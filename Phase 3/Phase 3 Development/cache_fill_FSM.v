@@ -11,13 +11,13 @@ output write_data_array; // write enable to cache data array to signal when fill
 output write_tag_array; // write enable to cachetag array to signal when all words are filled in to data array
 output [15:0] memory_address; // address to read from memory
 
-wire curr_state, next_state, delayed_next_state;
+wire curr_state, next_state, delayed_next_state, stop_mem_count;
 
 wire [3:0] chunk_inc, chunk_count, chunk_val;
 
 wire [15:0] mem_inc, mem_count, mem_val;
 
-assign write_data_array = memory_data_valid;
+assign write_data_array = memory_data_valid & miss_detected;
 
 assign write_tag_array = (chunk_count == 4'b1011) ? 1'b1 : 0;
 
@@ -27,8 +27,10 @@ dff_4bit chunk_value(.q(chunk_val), .d(chunk_inc), .wen(1'b1), .clk(clk), .rst(~
 
 assign chunk_count = (curr_state != 1'b1) ? 0 : chunk_val;
 
+assign stop_mem_count = (chunk_count == 4'b0111 | chunk_count == 4'b1000 | chunk_count == 4'b1001 | chunk_count == 4'b1010 | chunk_count == 4'b1011 | chunk_count == 4'b1100);
+
 // Mem Incrementer and the dff
-addsub_16bit mem_address_incrementer(.Sum(mem_inc), .Ovfl(), .A(mem_count), .B(16'h0002 & {16{miss_detected}}), .Sub(1'b0));
+addsub_16bit mem_address_incrementer(.Sum(mem_inc), .Ovfl(), .A(mem_count), .B(16'h0002 & {16{miss_detected}} & {16{~stop_mem_count}}), .Sub(1'b0));
 dff_16bit mem_access_value(.q(mem_val), .d(mem_inc), .wen(1'b1), .clk(clk), .rst(~rst_n));
 
 assign mem_count = (curr_state == 1'b1 & chunk_val != 0) ? mem_val : {miss_address[15:4], 4'h0};
@@ -38,9 +40,9 @@ dff state_delay(.q(curr_state), .d(next_state), .wen(1'b1), .clk(clk), .rst(~rst
 //dff state_of_FSM(.q(curr_state), .d(delayed_next_state), .wen(1'b1), .clk(clk), .rst(~rst_n));
 
 //dff fsm_busy_dff(.q(fsm_busy), .d(stall), .wen(1'b1), .clk(clk), .rst(rst_n));
-assign fsm_busy = (miss_detected & (chunk_val != 4'b1011)) ? 1'b1 : 0;
+assign fsm_busy = (miss_detected & (chunk_val != 4'b1100)) ? 1'b1 : 0;
 
-assign next_state = (miss_detected & (chunk_count != 4'b1011)) ? 1'b1 : 0;
+assign next_state = (miss_detected & (chunk_count != 4'b1100)) ? 1'b1 : 0;
 
 assign memory_address = mem_val;
 //dff_16bit memory_add_delay(.q(memory_address), .d(mem_val), .wen(1'b1), .clk(clk), .rst(~rst_n));
