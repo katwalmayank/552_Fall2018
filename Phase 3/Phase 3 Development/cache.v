@@ -1,7 +1,7 @@
-module cache(clk, rst_n, cache_write, mem_address, cache_data_out, cache_data_in, stall, mem_data_valid, missed_mem_address);
+module cache(clk, rst_n, cache_write, mem_address, cache_data_out, cache_data_in, stall, mem_data_valid, missed_mem_address, user_data_in);
 
 input clk, rst_n, cache_write, mem_data_valid;
-input [15:0] mem_address, cache_data_in;
+input [15:0] mem_address, cache_data_in, user_data_in;
 
 output stall; // TODO Let FSM handle the stall?
 output [15:0] cache_data_out, missed_mem_address; // data that cache has stored in both misses and hits, mem address to read data from
@@ -115,9 +115,9 @@ assign way_to_write = (~way_1_was_written_before) ? 0 :
 					  
 dff which_blocks_are_written[127:0](.q(written_blocks), .d(update_blocks), .wen(all_data_is_written_to_cache), .clk(clk), .rst(~rst_n));
 
-assign way_1_was_written_before = (written_blocks & meta_data_1_block);
+assign way_1_was_written_before = (written_blocks & meta_data_1_block) != 0;
 
-assign way_2_was_written_before = (written_blocks & meta_data_2_block);
+assign way_2_was_written_before = (written_blocks & meta_data_2_block) != 0;
 
 assign update_blocks = (written_blocks | meta_data_1_block | meta_data_2_block);
 

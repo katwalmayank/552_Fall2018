@@ -24,6 +24,11 @@ wire inst_stall;
 wire [15:0] missed_mem;
 wire [15:0] inst_data;
 
+// Data Cache
+wire data_stall;
+wire [15:0] missed_data_mem;
+wire [15:0] mem_data;
+
 // IF/ID Pipeline Signals
 wire [15:0] IF_inst, IF_pc, IF_pc_inc_out, 
             ID_inst, ID_pc, ID_pc_inc_out;
@@ -107,7 +112,7 @@ dff_16bit pc_dff(.q(pc_in), .d(IF_pc), .wen(~stall & ~(IF_inst[15:12] == 4'b1111
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //               Instruc to execute   datain           Address of the ID_inst			
 memory4c InstMem(.data_out(inst_data), .data_in(16'bx), .addr(missed_mem), .enable(1'b1), .wr(1'b0), .clk(clk), .rst(~rst_n), .data_valid(instruction_data_valid));
-cache InstCache(.clk(clk), .rst_n(rst_n), .cache_write(1'b0), .mem_address(inst_addr), .cache_data_out(IF_inst), .cache_data_in(inst_data), .stall(inst_stall), .mem_data_valid(instruction_data_valid), .missed_mem_address(missed_mem));
+cache InstCache(.clk(clk), .rst_n(rst_n), .cache_write(1'b0), .mem_address(inst_addr), .cache_data_out(IF_inst), .user_data_in(), .cache_data_in(inst_data), .stall(inst_stall), .mem_data_valid(instruction_data_valid), .missed_mem_address(missed_mem));
 
 // The address of the instruction to get
 assign inst_addr = pc_in;
@@ -314,7 +319,8 @@ EX_MEM EX_MEM(
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-memory4c DataMem(.data_out(data_out), .data_in(data_in), .addr(data_addr), .enable(data_en), .wr(data_w), .clk(clk), .rst(~rst_n), .data_valid(mem_data_valid)); 
+memory4c DataMem(.data_out(mem_data), .data_in(data_in), .addr(missed_data_mem), .enable(data_en), .wr(data_w), .clk(clk), .rst(~rst_n), .data_valid(mem_data_valid)); 
+cache DataCache(.clk(clk), .rst_n(rst_n), .cache_write(data_w), .mem_address(data_addr), .cache_data_out(data_out), .cache_data_in(mem_data), .user_data_in(data_in), .stall(data_stall), .mem_data_valid(mem_data_valid), .missed_mem_address(missed_data_mem));
 
 assign data_en = MEM_MemRead | MEM_MemWrite;
 

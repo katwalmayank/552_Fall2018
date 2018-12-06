@@ -60,6 +60,10 @@ add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/miss_address
 add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/next_state
 add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/write_data_array
 add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/write_tag_array
+add wave -noupdate /cpu_ptb/DUT/InstCache/update_blocks
+add wave -noupdate /cpu_ptb/DUT/InstCache/written_blocks
+add wave -noupdate /cpu_ptb/DUT/InstCache/way_1_was_written_before
+add wave -noupdate /cpu_ptb/DUT/InstCache/way_2_was_written_before
 add wave -noupdate -divider ID
 add wave -noupdate /cpu_ptb/DUT/ID_halt
 add wave -noupdate /cpu_ptb/DUT/ID_pc
@@ -129,6 +133,70 @@ add wave -noupdate /cpu_ptb/DUT/MEM_MemWrite
 add wave -noupdate /cpu_ptb/DUT/MEM_MemRead
 add wave -noupdate /cpu_ptb/DUT/MEM_MemtoReg
 add wave -noupdate /cpu_ptb/DUT/MEM_RegWrite
+add wave -noupdate -divider {Data Cache}
+add wave -noupdate /cpu_ptb/DUT/DataCache/all_data_is_written_to_cache
+add wave -noupdate /cpu_ptb/DUT/DataCache/byte_offset
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_data_in
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_data_out
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_data_set
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_hit
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_hit_data_set
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_miss_data_set
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_word_block_num
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_write
+add wave -noupdate /cpu_ptb/DUT/DataCache/clk
+add wave -noupdate /cpu_ptb/DUT/DataCache/data_is_valid_on_way_1
+add wave -noupdate /cpu_ptb/DUT/DataCache/data_is_valid_on_way_2
+add wave -noupdate /cpu_ptb/DUT/DataCache/data_is_valid_to_write_to_cache
+add wave -noupdate /cpu_ptb/DUT/DataCache/decoder_1_set
+add wave -noupdate /cpu_ptb/DUT/DataCache/decoder_2_set
+add wave -noupdate /cpu_ptb/DUT/DataCache/mem_address
+add wave -noupdate /cpu_ptb/DUT/DataCache/mem_data_valid
+add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_block
+add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_read
+add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_write
+add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_2_block
+add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_2_read
+add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_2_write
+add wave -noupdate /cpu_ptb/DUT/DataCache/missed_mem_address
+add wave -noupdate /cpu_ptb/DUT/DataCache/missed_word_block
+add wave -noupdate /cpu_ptb/DUT/DataCache/missed_word_block_1
+add wave -noupdate /cpu_ptb/DUT/DataCache/missed_word_block_2
+add wave -noupdate /cpu_ptb/DUT/DataCache/missed_word_block_3
+add wave -noupdate /cpu_ptb/DUT/DataCache/missed_word_block_4
+add wave -noupdate /cpu_ptb/DUT/DataCache/rst_n
+add wave -noupdate /cpu_ptb/DUT/DataCache/set
+add wave -noupdate /cpu_ptb/DUT/DataCache/stall
+add wave -noupdate /cpu_ptb/DUT/DataCache/tag
+add wave -noupdate /cpu_ptb/DUT/DataCache/update_blocks
+add wave -noupdate /cpu_ptb/DUT/DataCache/user_data_in
+add wave -noupdate /cpu_ptb/DUT/DataCache/way_1_was_written_before
+add wave -noupdate /cpu_ptb/DUT/DataCache/way_2_was_written_before
+add wave -noupdate /cpu_ptb/DUT/DataCache/way_bit
+add wave -noupdate /cpu_ptb/DUT/DataCache/way_to_write
+add wave -noupdate /cpu_ptb/DUT/DataCache/word_number
+add wave -noupdate /cpu_ptb/DUT/DataCache/written_blocks
+add wave -noupdate -divider {Data Cache FSM}
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/clk
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/rst_n
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/chunk_count
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/chunk_inc
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/chunk_val
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/curr_state
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/delayed_next_state
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/fsm_busy
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/mem_count
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/mem_inc
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/mem_val
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/memory_address
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/memory_data
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/memory_data_valid
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/miss_address
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/miss_detected
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/next_state
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/stop_mem_count
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/write_data_array
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/write_tag_array
 add wave -noupdate -divider WB
 add wave -noupdate /cpu_ptb/DUT/WB_halt
 add wave -noupdate /cpu_ptb/DUT/WB_MemtoReg
@@ -167,9 +235,9 @@ add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/WordEnable}
 add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/Dout}
 add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/WordEnable_real}
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2551 ns} 0}
+WaveRestoreCursors {{Cursor 1} {213 ns} 0}
 quietly wave cursor active 1
-configure wave -namecolwidth 260
+configure wave -namecolwidth 256
 configure wave -valuecolwidth 100
 configure wave -justifyvalue left
 configure wave -signalnamewidth 2
@@ -183,4 +251,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {2537 ns} {3950 ns}
+WaveRestoreZoom {0 ns} {1417 ns}
