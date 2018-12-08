@@ -64,6 +64,21 @@ add wave -noupdate /cpu_ptb/DUT/InstCache/update_blocks
 add wave -noupdate /cpu_ptb/DUT/InstCache/written_blocks
 add wave -noupdate /cpu_ptb/DUT/InstCache/way_1_was_written_before
 add wave -noupdate /cpu_ptb/DUT/InstCache/way_2_was_written_before
+add wave -noupdate -divider {PC Branch Counter}
+add wave -noupdate /cpu_ptb/DUT/PC/C
+add wave -noupdate /cpu_ptb/DUT/PC/F
+add wave -noupdate /cpu_ptb/DUT/PC/I
+add wave -noupdate /cpu_ptb/DUT/PC/I_shift
+add wave -noupdate /cpu_ptb/DUT/PC/PC_in
+add wave -noupdate /cpu_ptb/DUT/PC/PC_out
+add wave -noupdate /cpu_ptb/DUT/PC/brach_reg_out
+add wave -noupdate /cpu_ptb/DUT/PC/branch_out
+add wave -noupdate /cpu_ptb/DUT/PC/branch_taken
+add wave -noupdate /cpu_ptb/DUT/PC/data_in
+add wave -noupdate /cpu_ptb/DUT/PC/imm
+add wave -noupdate /cpu_ptb/DUT/PC/opcode
+add wave -noupdate /cpu_ptb/DUT/PC/pc_next
+add wave -noupdate /cpu_ptb/DUT/PC/target
 add wave -noupdate -divider ID
 add wave -noupdate /cpu_ptb/DUT/ID_halt
 add wave -noupdate /cpu_ptb/DUT/ID_pc
@@ -91,7 +106,6 @@ add wave -noupdate /cpu_ptb/DUT/RegWrite
 add wave -noupdate /cpu_ptb/DUT/Mem
 add wave -noupdate /cpu_ptb/DUT/Modify
 add wave -noupdate /cpu_ptb/DUT/pcs
-add wave -noupdate /cpu_ptb/DUT/data_w
 add wave -noupdate /cpu_ptb/DUT/Shift
 add wave -noupdate -divider EX
 add wave -noupdate /cpu_ptb/DUT/EX_pc_inc_out
@@ -123,8 +137,7 @@ add wave -noupdate /cpu_ptb/DUT/alu_in2
 add wave -noupdate /cpu_ptb/DUT/alu_flags
 add wave -noupdate /cpu_ptb/DUT/pc_flags
 add wave -noupdate -divider MEM
-add wave -noupdate /cpu_ptb/DUT/data_addr
-add wave -noupdate /cpu_ptb/DUT/MEM_ALUval
+add wave -noupdate /cpu_ptb/DUT/missed_data_mem
 add wave -noupdate /cpu_ptb/DUT/data_out
 add wave -noupdate /cpu_ptb/DUT/data_in
 add wave -noupdate /cpu_ptb/DUT/MEM_ReadData2
@@ -132,8 +145,15 @@ add wave -noupdate /cpu_ptb/DUT/MEM_DstReg
 add wave -noupdate /cpu_ptb/DUT/MEM_MemWrite
 add wave -noupdate /cpu_ptb/DUT/MEM_MemRead
 add wave -noupdate /cpu_ptb/DUT/MEM_MemtoReg
+add wave -noupdate /cpu_ptb/DUT/data_w
 add wave -noupdate /cpu_ptb/DUT/MEM_RegWrite
+add wave -noupdate /cpu_ptb/DUT/data_en
+add wave -noupdate /cpu_ptb/DUT/data_addr
+add wave -noupdate /cpu_ptb/DUT/MEM_ALUval
+add wave -noupdate /cpu_ptb/DUT/mem_data
 add wave -noupdate -divider {Data Cache}
+add wave -noupdate /cpu_ptb/DUT/DataCache/clk
+add wave -noupdate /cpu_ptb/DUT/DataCache/rst_n
 add wave -noupdate /cpu_ptb/DUT/DataCache/all_data_is_written_to_cache
 add wave -noupdate /cpu_ptb/DUT/DataCache/byte_offset
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_data_in
@@ -144,7 +164,6 @@ add wave -noupdate /cpu_ptb/DUT/DataCache/cache_hit_data_set
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_miss_data_set
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_word_block_num
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_write
-add wave -noupdate /cpu_ptb/DUT/DataCache/clk
 add wave -noupdate /cpu_ptb/DUT/DataCache/data_is_valid_on_way_1
 add wave -noupdate /cpu_ptb/DUT/DataCache/data_is_valid_on_way_2
 add wave -noupdate /cpu_ptb/DUT/DataCache/data_is_valid_to_write_to_cache
@@ -164,7 +183,6 @@ add wave -noupdate /cpu_ptb/DUT/DataCache/missed_word_block_1
 add wave -noupdate /cpu_ptb/DUT/DataCache/missed_word_block_2
 add wave -noupdate /cpu_ptb/DUT/DataCache/missed_word_block_3
 add wave -noupdate /cpu_ptb/DUT/DataCache/missed_word_block_4
-add wave -noupdate /cpu_ptb/DUT/DataCache/rst_n
 add wave -noupdate /cpu_ptb/DUT/DataCache/set
 add wave -noupdate /cpu_ptb/DUT/DataCache/stall
 add wave -noupdate /cpu_ptb/DUT/DataCache/tag
@@ -235,7 +253,7 @@ add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/WordEnable}
 add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/Dout}
 add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/WordEnable_real}
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {753 ns} 0}
+WaveRestoreCursors {{Cursor 1} {6172 ns} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 256
 configure wave -valuecolwidth 100
@@ -251,4 +269,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {649 ns} {2066 ns}
+WaveRestoreZoom {5873 ns} {7290 ns}

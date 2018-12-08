@@ -103,7 +103,7 @@ assign pcs = (opcode == 4'b1110);
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //		PC out        PC IN                 HALT 	        clk        rst_n
-dff_16bit pc_dff(.q(pc_in), .d(IF_pc), .wen(~stall & ~(IF_inst[15:12] == 4'b1111 & ~branch_taken)), .clk(clk), .rst(~rst_n));
+dff_16bit pc_dff(.q(pc_in), .d(IF_pc), .wen(~data_stall & ~stall & ~(IF_inst[15:12] == 4'b1111 & ~branch_taken)), .clk(clk), .rst(~rst_n));
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -112,7 +112,8 @@ dff_16bit pc_dff(.q(pc_in), .d(IF_pc), .wen(~stall & ~(IF_inst[15:12] == 4'b1111
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //               Instruc to execute   datain           Address of the ID_inst			
 memory4c InstMem(.data_out(inst_data), .data_in(16'bx), .addr(missed_mem), .enable(1'b1), .wr(1'b0), .clk(clk), .rst(~rst_n), .data_valid(instruction_data_valid));
-cache InstCache(.clk(clk), .rst_n(rst_n), .cache_write(1'b0), .mem_address(inst_addr), .cache_data_out(IF_inst), .user_data_in(), .cache_data_in(inst_data), .stall(inst_stall), .mem_data_valid(instruction_data_valid), .missed_mem_address(missed_mem));
+cache InstCache(.clk(clk), .rst_n(rst_n), .cache_write(1'b0), .mem_address(inst_addr), .cache_data_out(IF_inst), .user_data_in(), .cache_data_in(inst_data), 
+				.stall(inst_stall), .mem_data_valid(instruction_data_valid), .missed_mem_address(missed_mem), .mem_instruction(1'b1));
 
 // The address of the instruction to get
 assign inst_addr = pc_in;
@@ -127,7 +128,7 @@ IF_ID IF_ID(
 	.ID_inst(ID_inst),
 	.ID_PC(ID_pc),
 	.ID_PC_INC_OUT(ID_pc_inc_out), 
-	.wen(~stall & ~ID_halt)
+	.wen(~stall & ~ID_halt & ~data_stall)
 );
 
 // Opcode of instruction to execute
@@ -194,7 +195,7 @@ assign reg_w = WB_RegWrite;
 ID_EX ID_EX(
 	.clk(clk), 
 	.rst_n(rst_n), 
-	.wen(1'b1),
+	.wen(~data_stall),
 	.ID_ALUOp({3{~stall}} & ALUOp),
 	.ID_MemtoReg(~stall & MemtoReg), 
 	.ID_MemRead(~stall & MemRead),
@@ -299,7 +300,7 @@ EX_MEM EX_MEM(
 	.EX_DstReg(EX_DstReg),
 	.EX_halt(EX_halt),
 	.rst_n(rst_n),
-	.write_en(1'b1), 
+	.write_en(~data_stall), 
 	.clk(clk),
 	.MEM_MemWrite(MEM_MemWrite), 
 	.MEM_MemRead(MEM_MemRead), 
@@ -320,7 +321,8 @@ EX_MEM EX_MEM(
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 memory4c DataMem(.data_out(mem_data), .data_in(data_in), .addr(missed_data_mem), .enable(data_en), .wr(data_w), .clk(clk), .rst(~rst_n), .data_valid(mem_data_valid)); 
-cache DataCache(.clk(clk), .rst_n(rst_n), .cache_write(data_w), .mem_address(data_addr), .cache_data_out(data_out), .cache_data_in(mem_data), .user_data_in(data_in), .stall(data_stall), .mem_data_valid(mem_data_valid), .missed_mem_address(missed_data_mem));
+cache DataCache(.clk(clk), .rst_n(rst_n), .cache_write(MEM_MemWrite), .mem_address(data_addr), .cache_data_out(data_out), .cache_data_in(mem_data), .user_data_in(data_in), 
+				.stall(data_stall), .mem_data_valid(mem_data_valid), .missed_mem_address(missed_data_mem), .mem_instruction(data_en));
 
 assign data_en = MEM_MemRead | MEM_MemWrite;
 
@@ -331,7 +333,7 @@ assign data_addr = MEM_ALUval;
 assign data_in = (Forward_B == 2'b11) ? WB_DstData : MEM_ReadData2;
 
 // Is the operation memory write or read
-assign data_w = MEM_MemWrite;
+assign data_w = MEM_MemWrite & ~data_stall;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -343,12 +345,12 @@ assign data_w = MEM_MemWrite;
 MEM_WB MEM_WB(
 	.clk(clk),
 	.rst_n(rst_n),
-	.MEM_ALUval(MEM_ALUval),
-	.MEM_RegWrite(MEM_RegWrite), 
-	.MEM_DstReg(MEM_DstReg),
-	.MEM_ReadData(data_out), 
-	.MEM_MemtoReg(MEM_MemtoReg),
-	.MEM_halt(MEM_halt),
+	.MEM_ALUval(MEM_ALUval & {16{~data_stall}}),
+	.MEM_RegWrite(MEM_RegWrite & ~data_stall), 
+	.MEM_DstReg(MEM_DstReg & {4{~data_stall}}),
+	.MEM_ReadData(data_out & {16{~data_stall}}), 
+	.MEM_MemtoReg(MEM_MemtoReg & ~data_stall),
+	.MEM_halt(MEM_halt & ~data_stall),
 	.WB_ALUval(WB_ALUval),
 	.WB_RegWrite(WB_RegWrite),	
 	.WB_DstReg(WB_DstReg),

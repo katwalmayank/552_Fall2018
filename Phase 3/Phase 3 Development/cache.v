@@ -1,6 +1,6 @@
-module cache(clk, rst_n, cache_write, mem_address, cache_data_out, cache_data_in, stall, mem_data_valid, missed_mem_address, user_data_in);
+module cache(clk, rst_n, cache_write, mem_address, cache_data_out, cache_data_in, stall, mem_data_valid, missed_mem_address, user_data_in, mem_instruction);
 
-input clk, rst_n, cache_write, mem_data_valid;
+input clk, rst_n, cache_write, mem_data_valid, mem_instruction;
 input [15:0] mem_address, cache_data_in, user_data_in;
 
 output stall; // TODO Let FSM handle the stall?
@@ -32,14 +32,14 @@ DataArray cache_data(.clk(clk),
 MetaDataArray cache_meta_data_1(.clk(clk), 
 							  .rst(~rst_n), 
 							  .DataIn(meta_data_1_write), 
-							  .Write(all_data_is_written_to_cache | cache_write), //| cache_hit), // we only write to meta data after cache data is written
+							  .Write(all_data_is_written_to_cache | cache_write & stall), //| cache_hit), // we only write to meta data after cache data is written
 							  .BlockEnable(meta_data_1_block), // the blocks meta data
 							  .DataOut(meta_data_1_read) // meta data read from the block
 );
 
 MetaDataArray cache_meta_data_2(.clk(clk), 
 							  .rst(~rst_n), 
-							  .DataIn(meta_data_2_write | cache_write), 
+							  .DataIn(meta_data_2_write | cache_write & stall), 
 							  .Write(all_data_is_written_to_cache), // | cache_hit), 
 							  .BlockEnable(meta_data_2_block), 
 							  .DataOut(meta_data_2_read)
@@ -47,7 +47,7 @@ MetaDataArray cache_meta_data_2(.clk(clk),
 
 cache_fill_FSM cache_FSM(.clk(clk), 
 						 .rst_n(rst_n), 
-						 .miss_detected(~cache_hit), // if cache misses then we start getting data from memory
+						 .miss_detected(~cache_hit & rst_n & mem_instruction), // if cache misses then we start getting data from memory
 						 .miss_address(mem_address), // address that missed the cache
 						 .fsm_busy(stall), // stall signal coming from the FSM for the whole CPU
 						 .write_data_array(data_is_valid_to_write_to_cache), // indicates if the data is valid to write to the cache
