@@ -156,7 +156,9 @@ add wave -noupdate /cpu_ptb/DUT/DataCache/clk
 add wave -noupdate /cpu_ptb/DUT/DataCache/rst_n
 add wave -noupdate /cpu_ptb/DUT/DataCache/all_data_is_written_to_cache
 add wave -noupdate /cpu_ptb/DUT/DataCache/byte_offset
+add wave -noupdate /cpu_ptb/DUT/DataCache/user_data_in
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_data_in
+add wave -noupdate /cpu_ptb/DUT/DataCache/cache_data_to_write
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_data_out
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_data_set
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_hit
@@ -175,6 +177,8 @@ add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_block
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_2_block
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_read
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_2_read
+add wave -noupdate /cpu_ptb/DUT/DataCache/old_data_1
+add wave -noupdate /cpu_ptb/DUT/DataCache/old_data_2
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_write
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_2_write
 add wave -noupdate /cpu_ptb/DUT/DataCache/missed_mem_address
@@ -252,11 +256,24 @@ add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/Enable}
 add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/WordEnable}
 add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/Dout}
 add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[2]/WordEnable_real}
+add wave -noupdate -divider {Metadata Array}
+add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_1/Mblk[30]/Din}
+add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_1/Mblk[30]/Dout}
+add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_1/Mblk[30]/Enable}
+add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_1/Mblk[30]/WriteEnable}
+add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_1/Mblk[30]/clk}
+add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_1/Mblk[30]/rst}
+add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_2/Mblk[31]/Din}
+add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_2/Mblk[31]/Dout}
+add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_2/Mblk[31]/Enable}
+add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_2/Mblk[31]/WriteEnable}
+add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_2/Mblk[31]/clk}
+add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_2/Mblk[31]/rst}
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {6172 ns} 0}
+WaveRestoreCursors {{Cursor 1} {6781 ns} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 256
-configure wave -valuecolwidth 100
+configure wave -valuecolwidth 235
 configure wave -justifyvalue left
 configure wave -signalnamewidth 2
 configure wave -snapdistance 10
@@ -269,4 +286,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {5873 ns} {7290 ns}
+WaveRestoreZoom {0 ns} {1248 ns}

@@ -29,18 +29,20 @@ DataArray cache_data(.clk(clk),
 					 .DataOut(cache_data_out) // data read from the cache
 );
 
+dff delayed_signald_dff(.q(delayed_signal), .d(all_data_is_written_to_cache), .wen(1'b1), .clk(clk), .rst(~rst_n));
+
 MetaDataArray cache_meta_data_1(.clk(clk), 
 							  .rst(~rst_n), 
 							  .DataIn(meta_data_1_write), 
-							  .Write(all_data_is_written_to_cache | cache_write & stall), //| cache_hit), // we only write to meta data after cache data is written
+							  .Write(all_data_is_written_to_cache | cache_write & ~delayed_signal), // we only write to meta data after cache data is written
 							  .BlockEnable(meta_data_1_block), // the blocks meta data
 							  .DataOut(meta_data_1_read) // meta data read from the block
 );
 
 MetaDataArray cache_meta_data_2(.clk(clk), 
 							  .rst(~rst_n), 
-							  .DataIn(meta_data_2_write | cache_write & stall), 
-							  .Write(all_data_is_written_to_cache), // | cache_hit), 
+							  .DataIn(meta_data_2_write), 
+							  .Write(all_data_is_written_to_cache | cache_write & ~delayed_signal),  
 							  .BlockEnable(meta_data_2_block), 
 							  .DataOut(meta_data_2_read)
 );

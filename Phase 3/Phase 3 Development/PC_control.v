@@ -12,7 +12,7 @@ wire [15:0] I_shift, target, pc_next, imm;
 
 wire [15:0] branch_out, brach_reg_out; 
 
-assign I_shift = {6'b0, I, 1'b0};
+assign I_shift = {{6{I[8]}}, I, 1'b0};
 
 // PC + 2
 adder_16bit add1(.sum(pc_next), .a(PC_in), .b(16'h0002));
