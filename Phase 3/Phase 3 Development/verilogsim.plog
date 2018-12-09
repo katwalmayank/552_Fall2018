@@ -366,7 +366,7 @@ SIMLOG:: sim_cycles         365
 
 SIMLOG:: inst_count         112
 
-SIMLOG:: dcachehit_count          69
+SIMLOG:: dcachehit_count          35
 
 SIMLOG:: icachehit_count         290
 

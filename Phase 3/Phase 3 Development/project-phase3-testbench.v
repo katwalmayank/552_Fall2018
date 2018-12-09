@@ -208,7 +208,7 @@ module cpu_ptb();
    assign DCacheReq = DUT.data_en;
    // Signal indicating a valid instruction data read or write request to cache
    
-   assign DCacheHit = DUT.DataCache.cache_hit;
+   assign DCacheHit = DUT.DataCache.cache_hit & DUT.DataCache.mem_instruction;
    // Signal indicating a valid data cache hit
 
 
