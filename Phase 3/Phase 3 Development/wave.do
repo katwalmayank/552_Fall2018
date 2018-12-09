@@ -41,6 +41,12 @@ add wave -noupdate /cpu_ptb/DUT/InstCache/tag
 add wave -noupdate /cpu_ptb/DUT/InstCache/way_bit
 add wave -noupdate /cpu_ptb/DUT/InstCache/way_to_write
 add wave -noupdate /cpu_ptb/DUT/InstCache/word_number
+add wave -noupdate /cpu_ptb/DUT/InstCache/way_1_was_lru
+add wave -noupdate /cpu_ptb/DUT/InstCache/way_2_was_lru
+add wave -noupdate /cpu_ptb/DUT/InstCache/lru_for_way_1
+add wave -noupdate /cpu_ptb/DUT/InstCache/lru_for_way_2
+add wave -noupdate /cpu_ptb/DUT/InstCache/update_lru_way_1
+add wave -noupdate /cpu_ptb/DUT/InstCache/update_lru_way_2
 add wave -noupdate -divider {Cache FSM}
 add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/clk
 add wave -noupdate /cpu_ptb/DUT/InstCache/cache_FSM/rst_n
@@ -74,6 +80,7 @@ add wave -noupdate /cpu_ptb/DUT/PC/PC_out
 add wave -noupdate /cpu_ptb/DUT/PC/brach_reg_out
 add wave -noupdate /cpu_ptb/DUT/PC/branch_out
 add wave -noupdate /cpu_ptb/DUT/PC/branch_taken
+add wave -noupdate /cpu_ptb/DUT/branch_stall
 add wave -noupdate /cpu_ptb/DUT/PC/data_in
 add wave -noupdate /cpu_ptb/DUT/PC/imm
 add wave -noupdate /cpu_ptb/DUT/PC/opcode
@@ -177,8 +184,6 @@ add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_block
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_2_block
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_read
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_2_read
-add wave -noupdate /cpu_ptb/DUT/DataCache/old_data_1
-add wave -noupdate /cpu_ptb/DUT/DataCache/old_data_2
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_1_write
 add wave -noupdate /cpu_ptb/DUT/DataCache/meta_data_2_write
 add wave -noupdate /cpu_ptb/DUT/DataCache/missed_mem_address
@@ -198,6 +203,12 @@ add wave -noupdate /cpu_ptb/DUT/DataCache/way_bit
 add wave -noupdate /cpu_ptb/DUT/DataCache/way_to_write
 add wave -noupdate /cpu_ptb/DUT/DataCache/word_number
 add wave -noupdate /cpu_ptb/DUT/DataCache/written_blocks
+add wave -noupdate /cpu_ptb/DUT/DataCache/update_lru_way_1
+add wave -noupdate /cpu_ptb/DUT/DataCache/update_lru_way_2
+add wave -noupdate /cpu_ptb/DUT/DataCache/lru_for_way_1
+add wave -noupdate /cpu_ptb/DUT/DataCache/lru_for_way_2
+add wave -noupdate /cpu_ptb/DUT/DataCache/way_1_was_lru
+add wave -noupdate /cpu_ptb/DUT/DataCache/way_2_was_lru
 add wave -noupdate -divider {Data Cache FSM}
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/clk
 add wave -noupdate /cpu_ptb/DUT/DataCache/cache_FSM/rst_n
@@ -238,6 +249,7 @@ add wave -noupdate /cpu_ptb/DUT/forwarding_Unit/MEM_EX_forward_A
 add wave -noupdate /cpu_ptb/DUT/forwarding_Unit/MEM_EX_forward_B
 add wave -noupdate /cpu_ptb/DUT/forwarding_Unit/MEM_MEM_forward_B
 add wave -noupdate -divider HAZARD
+add wave -noupdate /cpu_ptb/DUT/hazard_stall
 add wave -noupdate /cpu_ptb/DUT/stall
 add wave -noupdate -divider {Block Data}
 add wave -noupdate {/cpu_ptb/DUT/InstCache/cache_data/blk[0]/clk}
@@ -270,10 +282,10 @@ add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_2/Mblk[31]/WriteEnabl
 add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_2/Mblk[31]/clk}
 add wave -noupdate {/cpu_ptb/DUT/DataCache/cache_meta_data_2/Mblk[31]/rst}
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {6781 ns} 0}
+WaveRestoreCursors {{Cursor 1} {23732 ns} 0}
 quietly wave cursor active 1
-configure wave -namecolwidth 256
-configure wave -valuecolwidth 235
+configure wave -namecolwidth 257
+configure wave -valuecolwidth 289
 configure wave -justifyvalue left
 configure wave -signalnamewidth 2
 configure wave -snapdistance 10
@@ -286,4 +298,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ns} {1248 ns}
+WaveRestoreZoom {23133 ns} {24331 ns}
