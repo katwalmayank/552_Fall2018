@@ -201,7 +201,7 @@ ID_EX ID_EX(
 	.ID_MemRead(~stall & MemRead),
 	.ID_MemWrite(~stall & MemWrite), 
 	.ID_ALUSrc(~stall & ALUSrc), 
-	.ID_RegWrite(~stall & RegWrite), 
+	.ID_RegWrite(~stall & RegWrite & (ID_inst != 16'b0)), 
 	.ID_Mem(~stall & Mem), 
 	.ID_Modify(~stall & Modify), 
 	.ID_Shift(~stall & Shift),
